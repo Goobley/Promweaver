@@ -108,7 +108,7 @@ class PctrPromModel(PromModel):
 
         lower_bc = BcType(projection, bc_provider, altitude, "lower", **bc_kwargs)
         if projection == "prominence":
-            upper_bc = BcType(projection, bc_provider, altitude, "upper", **bc_kwargs)
+            upper_bc : Optional[PromBc] = BcType(projection, bc_provider, altitude, "upper", **bc_kwargs)
         else:
             upper_bc = None
 
