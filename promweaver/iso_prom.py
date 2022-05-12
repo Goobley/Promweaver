@@ -13,6 +13,64 @@ from .utils import default_atomic_models
 
 
 class IsoPromModel(PromModel):
+    """
+    Class for "Iso" prominence simulations. Iso implies isothermal and isobaric.
+
+    Parameters
+    ----------
+    projection : str
+        Whether the object is to be treated as a "filament" or a "prominence".
+    temperature : float
+        The temperature of the prominence [K].
+    pressure : float
+        The pressure of the prominence [Pa].
+    thickness : float
+        The thickness of the prominence [m].
+    vturb : float
+        The microturbulent velocity inside the prominence [m/s].
+    altitude : float
+        The altitude of the prominence above the solar surface [m].
+    active_atoms : list of str
+        The element names to make "active" i.e. consider in non-LTE.
+    atomic_models : list of `lw.AtomicModels`, optional
+        The atomic models to use, a default set will be chosen if none are
+        specified.
+    Nhalf_points : int, optional
+        The number of points in half of the slab. Default: 45.
+    Nrays : int, optional
+        The number of Gauss-Legendre angular quadrature rays to use in the
+        model. Default: 3. This number will need to be set higher (e.g. 10) if
+        using the `ConePromBc`.
+    Nthreads : int, optional
+        The number of CPU threads to use when solving the radiative transfer
+        equations. Default: 1.
+    prd : bool, optional
+        Whether to consider the effects of partial frequency redistribution.
+        Default: False.
+    vlos : float, optional
+        The z-projected velocity to apply to the prominence model. Default:
+        None, i.e. 0.
+    vrad : float, optional
+        The Doppler-dimming radial velocity to apply. Note that for filaments
+        this is the same as `vlos` and that should be used instead. Not fully
+        supported in boundary conditions yet, (i.e. you should interpolate the
+        wavelength grid first). Default: None, i.e. 0.
+    ctx_kwargs : dict, optional
+        Extra kwargs to be passed when constructing the Context.
+    BcType : Constructor for a type of PromBc, optional
+        The base type to be used for constructing the boundary conditions.
+        Default: UniformJPromBc.
+    bc_kwargs : dict, optional
+        Extra kwargs to be passed to the construction of the boundary conditions.
+    bc_provider : PromBcProvider, optional
+        The provider to use for computing the radiation in the boundary
+        conditions. Default: `DynamicContextPromBcProvider` using an
+        `lw.Context` configured to match the current model. Note that the
+        default is note very performant, but is convenient for experimenting.
+        When running a grid of models, consider creating a
+        `TabulatedPromBcProvider` using `compute_falc_bc_ctx` and `tabulate_bc`,
+        since the default performs quite a few extra RT calculations.
+    """
     def __init__(self, projection, temperature, pressure, thickness, vturb, altitude,
                  active_atoms, atomic_models=None, Nhalf_points=45, Nrays=3, Nthreads=1, prd=False,
                  vlos: Optional[float]=None, vrad: Optional[float]=None,
@@ -55,7 +113,7 @@ class IsoPromModel(PromModel):
             if projection == "prominence" and vrad is not None:
                 vz = self.vrad
 
-            ctx = compute_falc_bc_ctx(active_atoms=active_atoms, atomic_models=atomic_models, 
+            ctx = compute_falc_bc_ctx(active_atoms=active_atoms, atomic_models=atomic_models,
                                       prd=self.prd, vz=vz, Nthreads=Nthreads)
             bc_provider = DynamicContextPromBcProvider(ctx)
 

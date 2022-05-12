@@ -6,3 +6,4 @@ from .j_prom_bc import UniformJPromBc
 from .limb_darkening import outgoing_chromo_ray_mu
 from .pctr_prom import PctrPromModel
 from .utils import default_atomic_models
+from .version import version as __version__
