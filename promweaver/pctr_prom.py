@@ -143,6 +143,9 @@ class PctrPromModel(PromModel):
         if update_model_kwargs is None:
             update_model_kwargs = {}
 
+        if self.prd and 'prd' not in kwargs:
+            kwargs['prd'] = self.prd
+
         def update_model(self, printNow, **kwargs):
             # NOTE(cmo): Fix pressure throughout the atmosphere.
             N = (lw.DefaultAtomicAbundance.totalAbundance * self.atmos.nHTot + self.atmos.ne)
@@ -170,4 +173,4 @@ class PctrPromModel(PromModel):
             # to here.
             self.ctx.update_deps(vlos=False, background=False)
 
-        return super().iterate_se(*args, **kwargs, update_model=update_model, update_model_kwargs=update_model_kwargs)
+        return super().iterate_se(*args, update_model=update_model, update_model_kwargs=update_model_kwargs, **kwargs)

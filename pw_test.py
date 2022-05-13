@@ -35,7 +35,7 @@ model = pw.IsoPromModel('prominence', 8000, 0.05, 10e6, 5e3, 1e7, active_atoms=a
 
 modelJ = pw.IsoPromModel('prominence', 8000, 0.05, 10e6, 5e3, 1e7, active_atoms=active_atoms,
                          Nthreads=Nthreads,
-                         ctx_kwargs={'ngOptions': lw.NgOptions(2, 5, 10)})
+                         ctx_kwargs={'ngOptions': lw.NgOptions(2, 5, 10)}, prd=True)
 
 plt.ion()
 
