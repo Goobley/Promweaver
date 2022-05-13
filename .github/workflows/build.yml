@@ -13,6 +13,7 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: 3.9
+
     - name: Install pypa/build
       run: >-
         python -m
@@ -28,8 +29,8 @@ jobs:
         --outdir dist/
         .
 
-    - uses: actions/upload-artifact@v2
     - name: Upload artifact
+      uses: actions/upload-artifact@v2
       with:
         path: dist/*
     
