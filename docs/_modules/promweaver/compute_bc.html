@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>promweaver.compute_bc &mdash; Promweaver  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> Promweaver
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../promweaver-api.html">Promweaver API Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Promweaver</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>promweaver.compute_bc</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for promweaver.compute_bc</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">import</span> <span class="nn">lightweaver</span> <span class="k">as</span> <span class="nn">lw</span>
+<span class="kn">from</span> <span class="nn">lightweaver.atomic_model</span> <span class="kn">import</span> <span class="n">AtomicModel</span>
+<span class="kn">from</span> <span class="nn">lightweaver.fal</span> <span class="kn">import</span> <span class="n">Falc82</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">default_atomic_models</span>
+
+
+<div class="viewcode-block" id="compute_falc_bc_ctx"><a class="viewcode-back" href="../../promweaver-api.html#promweaver.compute_bc.compute_falc_bc_ctx">[docs]</a><span class="k">def</span> <span class="nf">compute_falc_bc_ctx</span><span class="p">(</span><span class="n">active_atoms</span> <span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">atomic_models</span> <span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">AtomicModel</span><span class="p">]]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">prd</span> <span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">vz</span> <span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Nthreads</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                        <span class="n">quiet</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ctx_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">lw</span><span class="o">.</span><span class="n">Context</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Configures and iterates a lightweaver Context with a FALC atmosphere, the</span>
+<span class="sd">    selected atomic models, and active atoms. This can then be used with a</span>
+<span class="sd">    DynamicContextPromBcProvider.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">atomic_models</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">atomic_models</span> <span class="o">=</span> <span class="n">default_atomic_models</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">ctx_kwargs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ctx_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">atmos</span> <span class="o">=</span> <span class="n">Falc82</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">vz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">atmos</span><span class="o">.</span><span class="n">vlos</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">vz</span>
+        <span class="n">atmos</span><span class="o">.</span><span class="n">quadrature</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">atmos</span><span class="o">.</span><span class="n">quadrature</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+    <span class="n">rad_set</span> <span class="o">=</span> <span class="n">lw</span><span class="o">.</span><span class="n">RadiativeSet</span><span class="p">(</span><span class="n">atomic_models</span><span class="p">)</span>
+    <span class="n">rad_set</span><span class="o">.</span><span class="n">set_active</span><span class="p">(</span><span class="o">*</span><span class="n">active_atoms</span><span class="p">)</span>
+    <span class="n">eq_pops</span> <span class="o">=</span> <span class="n">rad_set</span><span class="o">.</span><span class="n">compute_eq_pops</span><span class="p">(</span><span class="n">atmos</span><span class="p">)</span>
+    <span class="n">spect</span> <span class="o">=</span> <span class="n">rad_set</span><span class="o">.</span><span class="n">compute_wavelength_grid</span><span class="p">()</span>
+
+    <span class="n">hprd</span> <span class="o">=</span> <span class="n">prd</span> <span class="ow">and</span> <span class="p">(</span><span class="n">vz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">ctx</span> <span class="o">=</span> <span class="n">lw</span><span class="o">.</span><span class="n">Context</span><span class="p">(</span><span class="n">atmos</span><span class="p">,</span> <span class="n">spect</span><span class="p">,</span> <span class="n">eq_pops</span><span class="p">,</span> <span class="n">Nthreads</span><span class="o">=</span><span class="n">Nthreads</span><span class="p">,</span> <span class="n">hprd</span><span class="o">=</span><span class="n">hprd</span><span class="p">,</span> <span class="o">**</span><span class="n">ctx_kwargs</span><span class="p">)</span>
+    <span class="n">lw</span><span class="o">.</span><span class="n">iterate_ctx_se</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">prd</span><span class="o">=</span><span class="n">prd</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="n">quiet</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ctx</span></div>
+
+<div class="viewcode-block" id="tabulate_bc"><a class="viewcode-back" href="../../promweaver-api.html#promweaver.compute_bc.tabulate_bc">[docs]</a><span class="k">def</span> <span class="nf">tabulate_bc</span><span class="p">(</span><span class="n">ctx</span><span class="p">:</span> <span class="n">lw</span><span class="o">.</span><span class="n">Context</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+                <span class="n">mu_grid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+                <span class="n">compute_rays_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the necessary data for a `TabulatedPromBcProvider` from a Context</span>
+<span class="sd">    (e.g. from `compute_falc_bc_ctx`).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ctx : lw.Context</span>
+<span class="sd">        The Context that will be used to compute the boundary condition (should</span>
+<span class="sd">        already be converged, as no iteration occurs here).</span>
+<span class="sd">    wavelength : array-like, optional</span>
+<span class="sd">        The wavelength grid to use for the boundary condition table. Default:</span>
+<span class="sd">        the one used in the Context.</span>
+<span class="sd">    mu_grid : array-like, optional</span>
+<span class="sd">        The grid of viewing angles (in the form of mu) to be used for the</span>
+<span class="sd">        boundary condition table. Default: `np.linspace(0.01, 1.0, 100)`.</span>
+<span class="sd">    compute_rays_kwargs : dict, optional</span>
+<span class="sd">        Any extra kwargs to be passed to `compute_rays` (e.g. `refinePrd`).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    data : dict</span>
+<span class="sd">        Dict with keys &#39;wavelength&#39;, &#39;mu_grid&#39; and &#39;I&#39; that can be splatted</span>
+<span class="sd">        directly into a `TabulatedPromBcProvider` or pickled.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">wavelength</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">wavelength</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">spect</span><span class="o">.</span><span class="n">wavelength</span>
+
+    <span class="k">if</span> <span class="n">mu_grid</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">mu_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">compute_rays_kwargs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">compute_rays_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+    
+    <span class="n">Igrid</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">compute_rays</span><span class="p">(</span><span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelength</span><span class="p">,</span> <span class="n">mus</span><span class="o">=</span><span class="n">mu_grid</span><span class="p">,</span> <span class="o">**</span><span class="n">compute_rays_kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;wavelength&#39;</span><span class="p">:</span> <span class="n">wavelength</span><span class="p">,</span> <span class="s1">&#39;mu_grid&#39;</span><span class="p">:</span> <span class="n">mu_grid</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="n">Igrid</span><span class="p">}</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, C. Osborne.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

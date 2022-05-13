@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>promweaver.iso_prom &mdash; Promweaver  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> Promweaver
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../promweaver-api.html">Promweaver API Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Promweaver</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>promweaver.iso_prom</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for promweaver.iso_prom</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Type</span>
+
+<span class="kn">import</span> <span class="nn">lightweaver</span> <span class="k">as</span> <span class="nn">lw</span>
+<span class="kn">import</span> <span class="nn">lightweaver.wittmann</span> <span class="k">as</span> <span class="nn">witt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">.bc_provider</span> <span class="kn">import</span> <span class="n">DynamicContextPromBcProvider</span>
+<span class="kn">from</span> <span class="nn">.compute_bc</span> <span class="kn">import</span> <span class="n">compute_falc_bc_ctx</span>
+<span class="kn">from</span> <span class="nn">.j_prom_bc</span> <span class="kn">import</span> <span class="n">UniformJPromBc</span>
+<span class="kn">from</span> <span class="nn">.prom_bc</span> <span class="kn">import</span> <span class="n">PromBc</span>
+<span class="kn">from</span> <span class="nn">.prom_model</span> <span class="kn">import</span> <span class="n">PromModel</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">default_atomic_models</span>
+
+
+<div class="viewcode-block" id="IsoPromModel"><a class="viewcode-back" href="../../promweaver-api.html#promweaver.iso_prom.IsoPromModel">[docs]</a><span class="k">class</span> <span class="nc">IsoPromModel</span><span class="p">(</span><span class="n">PromModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class for &quot;Iso&quot; prominence simulations. Iso implies isothermal and isobaric.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    projection : str</span>
+<span class="sd">        Whether the object is to be treated as a &quot;filament&quot; or a &quot;prominence&quot;.</span>
+<span class="sd">    temperature : float</span>
+<span class="sd">        The temperature of the prominence [K].</span>
+<span class="sd">    pressure : float</span>
+<span class="sd">        The pressure of the prominence [Pa].</span>
+<span class="sd">    thickness : float</span>
+<span class="sd">        The thickness of the prominence [m].</span>
+<span class="sd">    vturb : float</span>
+<span class="sd">        The microturbulent velocity inside the prominence [m/s].</span>
+<span class="sd">    altitude : float</span>
+<span class="sd">        The altitude of the prominence above the solar surface [m].</span>
+<span class="sd">    active_atoms : list of str</span>
+<span class="sd">        The element names to make &quot;active&quot; i.e. consider in non-LTE.</span>
+<span class="sd">    atomic_models : list of `lw.AtomicModels`, optional</span>
+<span class="sd">        The atomic models to use, a default set will be chosen if none are</span>
+<span class="sd">        specified.</span>
+<span class="sd">    Nhalf_points : int, optional</span>
+<span class="sd">        The number of points in half of the slab. Default: 45.</span>
+<span class="sd">    Nrays : int, optional</span>
+<span class="sd">        The number of Gauss-Legendre angular quadrature rays to use in the</span>
+<span class="sd">        model. Default: 3. This number will need to be set higher (e.g. 10) if</span>
+<span class="sd">        using the `ConePromBc`.</span>
+<span class="sd">    Nthreads : int, optional</span>
+<span class="sd">        The number of CPU threads to use when solving the radiative transfer</span>
+<span class="sd">        equations. Default: 1.</span>
+<span class="sd">    prd : bool, optional</span>
+<span class="sd">        Whether to consider the effects of partial frequency redistribution.</span>
+<span class="sd">        Default: False.</span>
+<span class="sd">    vlos : float, optional</span>
+<span class="sd">        The z-projected velocity to apply to the prominence model. Default:</span>
+<span class="sd">        None, i.e. 0.</span>
+<span class="sd">    vrad : float, optional</span>
+<span class="sd">        The Doppler-dimming radial velocity to apply. Note that for filaments</span>
+<span class="sd">        this is the same as `vlos` and that should be used instead. Not fully</span>
+<span class="sd">        supported in boundary conditions yet, (i.e. you should interpolate the</span>
+<span class="sd">        wavelength grid first). Default: None, i.e. 0.</span>
+<span class="sd">    ctx_kwargs : dict, optional</span>
+<span class="sd">        Extra kwargs to be passed when constructing the Context.</span>
+<span class="sd">    BcType : Constructor for a type of PromBc, optional</span>
+<span class="sd">        The base type to be used for constructing the boundary conditions.</span>
+<span class="sd">        Default: UniformJPromBc.</span>
+<span class="sd">    bc_kwargs : dict, optional</span>
+<span class="sd">        Extra kwargs to be passed to the construction of the boundary conditions.</span>
+<span class="sd">    bc_provider : PromBcProvider, optional</span>
+<span class="sd">        The provider to use for computing the radiation in the boundary</span>
+<span class="sd">        conditions. Default: `DynamicContextPromBcProvider` using an</span>
+<span class="sd">        `lw.Context` configured to match the current model. Note that the</span>
+<span class="sd">        default is note very performant, but is convenient for experimenting.</span>
+<span class="sd">        When running a grid of models, consider creating a</span>
+<span class="sd">        `TabulatedPromBcProvider` using `compute_falc_bc_ctx` and `tabulate_bc`,</span>
+<span class="sd">        since the default performs quite a few extra RT calculations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">thickness</span><span class="p">,</span> <span class="n">vturb</span><span class="p">,</span> <span class="n">altitude</span><span class="p">,</span>
+                 <span class="n">active_atoms</span><span class="p">,</span> <span class="n">atomic_models</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Nhalf_points</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">Nrays</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">Nthreads</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">prd</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">vlos</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vrad</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">ctx_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">BcType</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">PromBc</span><span class="p">]]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bc_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bc_provider</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">projection</span> <span class="o">=</span> <span class="n">projection</span>
+        <span class="k">if</span> <span class="n">projection</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;prominence&quot;</span><span class="p">,</span> <span class="s2">&quot;filament&quot;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected projection (</span><span class="si">{</span><span class="n">projection</span><span class="si">}</span><span class="s2">), to be &#39;prominence&#39; or &#39;filament&#39;&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span> <span class="o">=</span> <span class="n">temperature</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pressure</span> <span class="o">=</span> <span class="n">pressure</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pressure_cgs</span> <span class="o">=</span> <span class="n">pressure</span> <span class="o">*</span> <span class="mi">10</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thickness</span> <span class="o">=</span> <span class="n">thickness</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vturb</span> <span class="o">=</span> <span class="n">vturb</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">altitude</span> <span class="o">=</span> <span class="n">altitude</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Nrays</span> <span class="o">=</span> <span class="n">Nrays</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prd</span> <span class="o">=</span> <span class="n">prd</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vlos</span> <span class="o">=</span> <span class="n">vlos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vrad</span> <span class="o">=</span> <span class="n">vrad</span>
+
+        <span class="k">if</span> <span class="n">projection</span> <span class="o">==</span> <span class="s2">&quot;filament&quot;</span> <span class="ow">and</span> <span class="n">vrad</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">vlos</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot set both vrad and vlos for a filament. (Just set one of the two).&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">projection</span> <span class="o">==</span> <span class="s2">&quot;filament&quot;</span> <span class="ow">and</span> <span class="n">vrad</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">vlos</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">vlos</span> <span class="o">=</span> <span class="n">vrad</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vlos</span> <span class="o">=</span> <span class="n">vrad</span>
+
+        <span class="k">if</span> <span class="n">ctx_kwargs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ctx_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">BcType</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">BcType</span> <span class="o">=</span> <span class="n">UniformJPromBc</span>
+        <span class="k">if</span> <span class="n">bc_kwargs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">bc_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">if</span> <span class="n">atomic_models</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">atomic_models</span> <span class="o">=</span> <span class="n">default_atomic_models</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">bc_provider</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">vz</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">projection</span> <span class="o">==</span> <span class="s2">&quot;prominence&quot;</span> <span class="ow">and</span> <span class="n">vrad</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">vz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vrad</span>
+
+            <span class="n">ctx</span> <span class="o">=</span> <span class="n">compute_falc_bc_ctx</span><span class="p">(</span><span class="n">active_atoms</span><span class="o">=</span><span class="n">active_atoms</span><span class="p">,</span> <span class="n">atomic_models</span><span class="o">=</span><span class="n">atomic_models</span><span class="p">,</span>
+                                      <span class="n">prd</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prd</span><span class="p">,</span> <span class="n">vz</span><span class="o">=</span><span class="n">vz</span><span class="p">,</span> <span class="n">Nthreads</span><span class="o">=</span><span class="n">Nthreads</span><span class="p">)</span>
+            <span class="n">bc_provider</span> <span class="o">=</span> <span class="n">DynamicContextPromBcProvider</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span>
+
+        <span class="n">xmod</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([(</span><span class="mf">1e-30</span><span class="p">,),</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Nhalf_points</span><span class="p">)])</span>
+        <span class="n">z1</span> <span class="o">=</span> <span class="n">thickness</span> <span class="o">-</span> <span class="n">xmod</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">thickness</span>
+        <span class="n">z2</span> <span class="o">=</span> <span class="n">xmod</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">thickness</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">z1</span><span class="p">,</span> <span class="n">z2</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">*</span> <span class="n">temperature</span>
+
+        <span class="c1"># NOTE(cmo): CGS Starts Here</span>
+        <span class="n">eos</span> <span class="o">=</span> <span class="n">witt</span><span class="o">.</span><span class="n">Wittmann</span><span class="p">()</span>
+        <span class="n">rho</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+        <span class="n">ne</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rho</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">rho</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">eos</span><span class="o">.</span><span class="n">rho_from_pg</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pressure_cgs</span><span class="p">)</span>
+            <span class="n">ne</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">eos</span><span class="o">.</span><span class="n">pe_from_pg</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pressure_cgs</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">witt</span><span class="o">.</span><span class="n">BK</span> <span class="o">*</span> <span class="n">temperature</span><span class="p">)</span>
+        <span class="n">nHTot</span> <span class="o">=</span> <span class="n">rho</span> <span class="o">/</span> <span class="p">(</span><span class="n">lw</span><span class="o">.</span><span class="n">CM_TO_M</span><span class="o">**</span><span class="mi">3</span> <span class="o">/</span> <span class="n">lw</span><span class="o">.</span><span class="n">G_TO_KG</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">lw</span><span class="o">.</span><span class="n">Amu</span> <span class="o">*</span> <span class="n">lw</span><span class="o">.</span><span class="n">DefaultAtomicAbundance</span><span class="o">.</span><span class="n">massPerH</span><span class="p">)</span>
+        <span class="n">ne</span> <span class="o">/=</span> <span class="n">lw</span><span class="o">.</span><span class="n">CM_TO_M</span><span class="o">**</span><span class="mi">3</span>
+        <span class="c1"># NOTE(cmo): CGS Ends Here</span>
+
+        <span class="n">lower_bc</span> <span class="o">=</span> <span class="n">BcType</span><span class="p">(</span><span class="n">projection</span><span class="p">,</span> <span class="n">bc_provider</span><span class="p">,</span> <span class="n">altitude</span><span class="p">,</span> <span class="s2">&quot;lower&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">bc_kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">projection</span> <span class="o">==</span> <span class="s2">&quot;prominence&quot;</span><span class="p">:</span>
+            <span class="n">upper_bc</span> <span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PromBc</span><span class="p">]</span> <span class="o">=</span> <span class="n">BcType</span><span class="p">(</span><span class="n">projection</span><span class="p">,</span> <span class="n">bc_provider</span><span class="p">,</span> <span class="n">altitude</span><span class="p">,</span> <span class="s2">&quot;upper&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">bc_kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">upper_bc</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">vel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="k">if</span> <span class="n">vlos</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">*</span> <span class="n">vlos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">atmos</span> <span class="o">=</span> <span class="n">lw</span><span class="o">.</span><span class="n">Atmosphere</span><span class="o">.</span><span class="n">make_1d</span><span class="p">(</span><span class="n">lw</span><span class="o">.</span><span class="n">ScaleType</span><span class="o">.</span><span class="n">Geometric</span><span class="p">,</span> <span class="n">depthScale</span><span class="o">=</span><span class="n">z</span><span class="p">,</span>
+                                           <span class="n">temperature</span><span class="o">=</span><span class="n">temp</span><span class="p">,</span> <span class="n">vlos</span><span class="o">=</span><span class="n">vel</span><span class="p">,</span>
+                                           <span class="n">vturb</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">*</span> <span class="n">vturb</span><span class="p">,</span>
+                                           <span class="n">ne</span><span class="o">=</span><span class="n">ne</span><span class="p">,</span>
+                                           <span class="n">nHTot</span><span class="o">=</span><span class="n">nHTot</span><span class="p">,</span>
+                                           <span class="n">lowerBc</span><span class="o">=</span><span class="n">lower_bc</span><span class="p">,</span>
+                                           <span class="n">upperBc</span><span class="o">=</span><span class="n">upper_bc</span>
+                                          <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">atmos</span><span class="o">.</span><span class="n">quadrature</span><span class="p">(</span><span class="n">Nrays</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">rad_set</span> <span class="o">=</span> <span class="n">lw</span><span class="o">.</span><span class="n">RadiativeSet</span><span class="p">(</span><span class="n">atomic_models</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rad_set</span><span class="o">.</span><span class="n">set_active</span><span class="p">(</span><span class="o">*</span><span class="n">active_atoms</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eq_pops</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rad_set</span><span class="o">.</span><span class="n">iterate_lte_ne_eq_pops</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atmos</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">spect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rad_set</span><span class="o">.</span><span class="n">compute_wavelength_grid</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Nthreads</span> <span class="o">=</span> <span class="n">Nthreads</span>
+        <span class="n">hprd</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prd</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">vlos</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">hprd</span> <span class="ow">and</span> <span class="n">hprd</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ctx_kwargs</span><span class="p">:</span>
+            <span class="n">ctx_kwargs</span><span class="p">[</span><span class="s1">&#39;hprd&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hprd</span>
+        <span class="n">ctx</span> <span class="o">=</span> <span class="n">lw</span><span class="o">.</span><span class="n">Context</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atmos</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spect</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">eq_pops</span><span class="p">,</span>
+                         <span class="n">Nthreads</span><span class="o">=</span><span class="n">Nthreads</span><span class="p">,</span> <span class="n">conserveCharge</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                         <span class="o">**</span><span class="n">ctx_kwargs</span>
+                        <span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="IsoPromModel.iterate_se"><a class="viewcode-back" href="../../promweaver-api.html#promweaver.iso_prom.IsoPromModel.iterate_se">[docs]</a>    <span class="k">def</span> <span class="nf">iterate_se</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">update_model_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">update_model_kwargs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">update_model_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prd</span> <span class="ow">and</span> <span class="s1">&#39;prd&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;prd&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prd</span>
+
+        <span class="k">def</span> <span class="nf">update_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">printNow</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="c1"># NOTE(cmo): Fix pressure throughout the atmosphere.</span>
+            <span class="n">N</span> <span class="o">=</span> <span class="p">(</span><span class="n">lw</span><span class="o">.</span><span class="n">DefaultAtomicAbundance</span><span class="o">.</span><span class="n">totalAbundance</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">atmos</span><span class="o">.</span><span class="n">nHTot</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">atmos</span><span class="o">.</span><span class="n">ne</span><span class="p">)</span>
+            <span class="n">NError</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pressure</span> <span class="o">/</span> <span class="p">(</span><span class="n">lw</span><span class="o">.</span><span class="n">KBoltzmann</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="p">)</span> <span class="o">-</span> <span class="n">N</span>
+            <span class="n">nHTotCorrection</span> <span class="o">=</span> <span class="n">NError</span> <span class="o">/</span> <span class="p">(</span><span class="n">lw</span><span class="o">.</span><span class="n">DefaultAtomicAbundance</span><span class="o">.</span><span class="n">totalAbundance</span>
+                                        <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">eq_pops</span><span class="p">[</span><span class="s1">&#39;H&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">atmos</span><span class="o">.</span><span class="n">nHTot</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">printNow</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;    nHTotError: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">nHTotCorrection</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">atmos</span><span class="o">.</span><span class="n">nHTot</span><span class="p">))</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">atmos</span><span class="o">.</span><span class="n">ne</span><span class="p">[:]</span> <span class="o">+=</span> <span class="n">nHTotCorrection</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">eq_pops</span><span class="p">[</span><span class="s1">&#39;H&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">atmos</span><span class="o">.</span><span class="n">nHTot</span>
+            <span class="n">prevnHTot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atmos</span><span class="o">.</span><span class="n">nHTot</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">atmos</span><span class="o">.</span><span class="n">nHTot</span><span class="p">[:]</span> <span class="o">+=</span> <span class="n">nHTotCorrection</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atmos</span><span class="o">.</span><span class="n">nHTot</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">lw</span><span class="o">.</span><span class="n">ConvergenceError</span><span class="p">(</span><span class="s2">&quot;nHTot driven negative!&quot;</span><span class="p">)</span>
+            <span class="n">nHTotRatio</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">atmos</span><span class="o">.</span><span class="n">nHTot</span> <span class="o">/</span> <span class="n">prevnHTot</span>
+
+
+            <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rad_set</span><span class="o">.</span><span class="n">activeAtoms</span><span class="p">:</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eq_pops</span><span class="p">[</span><span class="n">atom</span><span class="o">.</span><span class="n">element</span><span class="p">]</span>
+                <span class="n">p</span><span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="o">*=</span> <span class="n">nHTotRatio</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+
+            <span class="c1"># TODO(cmo): Add condition to not always re-evaluate the line profiles. Maybe on ne change?</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">update_deps</span><span class="p">(</span><span class="n">vlos</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">iterate_se</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">update_model</span><span class="o">=</span><span class="n">update_model</span><span class="p">,</span> <span class="n">update_model_kwargs</span><span class="o">=</span><span class="n">update_model_kwargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, C. Osborne.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
