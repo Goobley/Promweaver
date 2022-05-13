@@ -12,7 +12,7 @@ from .prom_model import PromModel
 from .utils import default_atomic_models
 
 class PctrPromModel(PromModel):
-    """
+    r"""
     Class for prominence with prominence-corona transition region (PCTR)
     simulations. Uses the stratifications first described by Anzer & Heinzel
     (1999), and later adopted by Labrosse et al. in PROM.
@@ -22,8 +22,8 @@ class PctrPromModel(PromModel):
     half of the slab :math:`m \in [0, M/2]` are given by
 
     .. math::
-        p(m) = 4 * (p_{cen} - p_{tr}) \frac{m}{M} * (1 - \frac{m}{M}) + p_tr
-        T(m) = T_cen + (T_tr - T_cen) * (1 - 4 \frac{m}{M} (1 - \frac{m}{M}))^\gamma
+        p(m) = 4 * (p_{cen} - p_{tr}) \frac{m}{M} \left(1 - \frac{m}{M}\right) + p_{tr}\\
+        T(m) = T_{cen} + (T_{tr} - T_{cen}) * \left(1 - 4 \frac{m}{M} \left(1 - \frac{m}{M}\right)\right)^\gamma
 
     This is then reflected in the second half of the slab.
 

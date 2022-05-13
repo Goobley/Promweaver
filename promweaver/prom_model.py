@@ -108,7 +108,7 @@ class PromModel:
             Whether to return the IterationUpdate objects used in the final
             convergence decision, if True, these will be returned in a list as the
             second return value. (Default: False).
-        update_model : callable(PromModel, bool, **kwargs), optional
+        update_model : callable(PromModel, bool, \*\*kwargs), optional
             A function to use to update model parameters based on iteration
             (e.g. scale populations to maintain pressure), receives the model,
             and whether it should print based on the current iteration progress

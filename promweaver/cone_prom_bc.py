@@ -77,7 +77,7 @@ def compute_I_cone(p: ConeRadParams):
 
 
 class ConePromBc(PromBc):
-    """
+    r"""
     Complex boundary condition that supplies an averaged :math:`I_\nu` distinct
     for each ray of the boundary condition. The primary use case for this is
     better handling complex velocity fields. In the filament view, this is

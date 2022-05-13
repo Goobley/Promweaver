@@ -8,7 +8,7 @@ from .limb_darkening import outgoing_chromo_ray_mu
 from .prom_bc import PromBc
 
 class UniformJPromBc(PromBc):
-    """
+    r"""
     Simple boundary condition that supplies :math:`J_\nu` at each incoming ray
     and frequency for the boundary condition. This value is uniform over each
     ray. Putting the boundary condition into `final_synthesis` mode by
