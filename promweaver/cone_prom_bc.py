@@ -77,6 +77,43 @@ def compute_I_cone(p: ConeRadParams):
 
 
 class ConePromBc(PromBc):
+    """
+    Complex boundary condition that supplies an averaged :math:`I_\nu` distinct
+    for each ray of the boundary condition. The primary use case for this is
+    better handling complex velocity fields. In the filament view, this is
+    simple as mu_z for the filament and the underlying atmosphere are aligned.
+    For the prominence case, we instead need to average over 1/4 of a cone (in
+    the sense of a polar angle :math:`phi` in the prominence frame) and its
+    angles of intersection with the solar surface. This slightly breaks the
+    axisymmetric assumptions of one-dimensional models, but the averaging
+    ensures that it's correct from an energy standpoint. In `final_synthesis`
+    mode (by requesting a single `compute_rays` from the model, or setting
+    `final_synthesis` to true on the `lw.Atmosphere` used in the model),
+    radiation is directly sampled along the ray path, as the converged
+    populations have been determined.
+
+    This style of boundary condition is similar to the Gouttebroze 2005, and
+    based on those described in Jenkins, Osborne & Keppens 2022 (in prep.).
+
+    Parameters
+    ----------
+    projection : str
+        filament or prominence
+    bc_provider : PromBcProvider
+        The provider to be used for computing the necessary intensity values.
+    altitude_m : float
+        The altitude of the prominence above the solar surface [m]
+    prom_upper_lower : str, optional
+        Whether this is the 'upper' or 'lower' z-boundary for a prominence (not
+        used in filament cases).
+    Nphi : int, optional
+        The number of trapezoidal phi rays to be used in each cone. Default: 50.
+    Ncone_rays : int, optional
+        The number of Gauss-Legendre rays per cone to supersample the range of
+        mus associated with this cone. This prevents sharp changes in intensity
+        when one ray (out of few) starts to miss the Sun with increasing
+        altitude. Default: 10.
+    """
     def __init__(self, projection: str, bc_provider: PromBcProvider, altitude_m: float,
                  prom_upper_lower: Optional[str]=None, Nphi_nodes: int=50, Ncone_rays: int=10):
         self.provider = bc_provider

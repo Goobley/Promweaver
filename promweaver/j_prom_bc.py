@@ -7,8 +7,30 @@ from .bc_provider import PromBcProvider
 from .limb_darkening import outgoing_chromo_ray_mu
 from .prom_bc import PromBc
 
-
 class UniformJPromBc(PromBc):
+    """
+    Simple boundary condition that supplies :math:`J_\nu` at each incoming ray
+    and frequency for the boundary condition. This value is uniform over each
+    ray. Putting the boundary condition into `final_synthesis` mode by
+    requesting a single `compute_rays` from the model, or setting
+    `final_synthesis` to true on the `lw.Atmosphere` used in the model samples
+    the radiation directly along the ray path, as the converged populations have
+    been determined.
+
+    Parameters
+    ----------
+    projection : str
+        filament or prominence
+    bc_provider : PromBcProvider
+        The provider to be used for computing the necessary intensity values.
+    altitude_m : float
+        The altitude of the prominence above the solar surface [m]
+    prom_upper_lower : str, optional
+        Whether this is the 'upper' or 'lower' z-boundary for a prominence (not
+        used in filament cases).
+    Nrays : int, optional
+        The number of Gauss-Legendre rays to be used to compute J. Default: 50.
+    """
     def __init__(self, projection: str, bc_provider: PromBcProvider, altitude_m: float,
                  prom_upper_lower: Optional[str]=None, Nrays: int=50):
         self.provider = bc_provider
