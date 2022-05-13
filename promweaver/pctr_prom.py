@@ -33,10 +33,10 @@ class PctrPromModel(PromModel):
         Whether the object is to be treated as a "filament" or a "prominence".
     cen_temperature : float
         The central temperature of the prominence [K].
-    cen_pressure : float
-        The central pressure of the prominence [Pa].
     tr_temperature : float
         The transition-region temperature of the prominence [K].
+    cen_pressure : float
+        The central pressure of the prominence [Pa].
     tr_pressure : float
         The transition-region pressure of the prominence [Pa].
     max_cmass : float
