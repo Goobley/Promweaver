@@ -12,11 +12,92 @@ from .prom_model import PromModel
 from .utils import default_atomic_models
 
 class PctrPromModel(PromModel):
+    """
+    Class for prominence with prominence-corona transition region (PCTR)
+    simulations. Uses the stratifications first described by Anzer & Heinzel
+    (1999), and later adopted by Labrosse et al. in PROM.
+
+    As a function of column mass :math:`m`, with maximum value along the line of
+    sight :math:`M`, the pressure and temperature stratifications in the first
+    half of the slab :math:`m \in [0, M/2]` are given by
+
+    .. math::
+        p(m) = 4 * (p_{cen} - p_{tr}) \frac{m}{M} * (1 - \frac{m}{M}) + p_tr
+        T(m) = T_cen + (T_tr - T_cen) * (1 - 4 \frac{m}{M} (1 - \frac{m}{M}))^\gamma
+
+    This is then reflected in the second half of the slab.
+
+    Parameters
+    ----------
+    projection : str
+        Whether the object is to be treated as a "filament" or a "prominence".
+    cen_temperature : float
+        The central temperature of the prominence [K].
+    cen_pressure : float
+        The central pressure of the prominence [Pa].
+    tr_temperature : float
+        The transition-region temperature of the prominence [K].
+    tr_pressure : float
+        The transition-region pressure of the prominence [Pa].
+    max_cmass : float
+        The maximum column mass of the prominence model [kg/m2].
+    vturb : float
+        The microturbulent velocity inside the prominence [m/s].
+    altitude : float
+        The altitude of the prominence above the solar surface [m].
+    gamma : float
+        The slope of the temperature gradient in the PCTR (must be >=2.0).
+        Higher values are steeper.
+    active_atoms : list of str
+        The element names to make "active" i.e. consider in non-LTE.
+    atomic_models : list of `lw.AtomicModels`, optional
+        The atomic models to use, a default set will be chosen if none are
+        specified.
+    Ncmass_decades : float, optional
+        The number of column mass decades to span in each half of the slab, i.e.
+        the value of :math:`log10(M/2) - log10(m_0)`. Default: 6.
+    Nhalf_points : int, optional
+        The number of points in half of the slab. Default: 100. Total slab size
+        will be 2N-1 for symmetry reasons.
+    Nrays : int, optional
+        The number of Gauss-Legendre angular quadrature rays to use in the
+        model. Default: 3. This number will need to be set higher (e.g. 10) if
+        using the `ConePromBc`.
+    Nthreads : int, optional
+        The number of CPU threads to use when solving the radiative transfer
+        equations. Default: 1.
+    prd : bool, optional
+        Whether to consider the effects of partial frequency redistribution.
+        Default: False.
+    vlos : float, optional
+        The z-projected velocity to apply to the prominence model. Default:
+        None, i.e. 0.
+    vrad : float, optional
+        The Doppler-dimming radial velocity to apply. Note that for filaments
+        this is the same as `vlos` and that should be used instead. Not fully
+        supported in boundary conditions yet, (i.e. you should interpolate the
+        wavelength grid first). Default: None, i.e. 0.
+    ctx_kwargs : dict, optional
+        Extra kwargs to be passed when constructing the Context.
+    BcType : Constructor for a type of PromBc, optional
+        The base type to be used for constructing the boundary conditions.
+        Default: UniformJPromBc.
+    bc_kwargs : dict, optional
+        Extra kwargs to be passed to the construction of the boundary conditions.
+    bc_provider : PromBcProvider, optional
+        The provider to use for computing the radiation in the boundary
+        conditions. Default: `DynamicContextPromBcProvider` using an
+        `lw.Context` configured to match the current model. Note that the
+        default is note very performant, but is convenient for experimenting.
+        When running a grid of models, consider creating a
+        `TabulatedPromBcProvider` using `compute_falc_bc_ctx` and `tabulate_bc`,
+        since the default performs quite a few extra RT calculations.
+    """
     def __init__(self, projection, cen_temperature, tr_temperature,
                  cen_pressure, tr_pressure, max_cmass, vturb, altitude,
                  gamma,
                  active_atoms, atomic_models=None, Nhalf_points=100,
-                 Ncmass_decades=6, Nrays=3, prd=False,
+                 Ncmass_decades=6.0, Nrays=3, prd=False,
                  vlos: Optional[float]=None, vrad: Optional[float]=None,
                  Nthreads=1, ctx_kwargs=None, BcType: Optional[Type[PromBc]]=None,
                  bc_kwargs=None, bc_provider=None):
@@ -37,6 +118,9 @@ class PctrPromModel(PromModel):
         self.prd = prd
         self.vlos = vlos
         self.vrad = vrad
+
+        if gamma < 2.0:
+            raise ValueError("gamma must be >= 2.0")
 
         if projection == "filament" and vrad is not None and vlos is not None:
             raise ValueError("Cannot set both vrad and vlos for a filament. (Just set one of the two).")
