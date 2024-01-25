@@ -9,9 +9,15 @@ import numpy as np
 from .utils import default_atomic_models
 
 
-def compute_falc_bc_ctx(active_atoms : List[str], atomic_models : Optional[List[AtomicModel]]=None,
-                        prd : bool=False, vz : Optional[float]=None, Nthreads: int=1,
-                        quiet: bool=False, ctx_kwargs: Optional[dict]=None) -> lw.Context:
+def compute_falc_bc_ctx(
+    active_atoms: List[str],
+    atomic_models: Optional[List[AtomicModel]] = None,
+    prd: bool = False,
+    vz: Optional[float] = None,
+    Nthreads: int = 1,
+    quiet: bool = False,
+    ctx_kwargs: Optional[dict] = None,
+) -> lw.Context:
     """
     Configures and iterates a lightweaver Context with a FALC atmosphere, the
     selected atomic models, and active atoms. This can then be used with a
@@ -40,11 +46,14 @@ def compute_falc_bc_ctx(active_atoms : List[str], atomic_models : Optional[List[
     lw.iterate_ctx_se(ctx, prd=prd, quiet=quiet)
     return ctx
 
-def tabulate_bc(ctx: lw.Context, wavelength: Optional[np.ndarray]=None,
-                mu_grid: Optional[np.ndarray]=None,
-                compute_rays_kwargs: Optional[dict]=None,
-                max_rays: int=10,
-    ):
+
+def tabulate_bc(
+    ctx: lw.Context,
+    wavelength: Optional[np.ndarray] = None,
+    mu_grid: Optional[np.ndarray] = None,
+    compute_rays_kwargs: Optional[dict] = None,
+    max_rays: int = 10,
+):
     """
     Computes the necessary data for a `TabulatedPromBcProvider` from a Context
     (e.g. from `compute_falc_bc_ctx`).
@@ -84,7 +93,9 @@ def tabulate_bc(ctx: lw.Context, wavelength: Optional[np.ndarray]=None,
         compute_rays_kwargs = {}
 
     if max_rays < 1:
-        Igrid = ctx.compute_rays(wavelengths=wavelength, mus=mu_grid, **compute_rays_kwargs)
+        Igrid = ctx.compute_rays(
+            wavelengths=wavelength, mus=mu_grid, **compute_rays_kwargs
+        )
     else:
         Igrid = np.zeros((wavelength.shape[0], mu_grid.shape[0]))
         num_batches = (mu_grid.shape[0] + max_rays - 1) // max_rays
@@ -103,4 +114,4 @@ def tabulate_bc(ctx: lw.Context, wavelength: Optional[np.ndarray]=None,
             # performance hit.
             gc.collect()
 
-    return {'wavelength': wavelength, 'mu_grid': mu_grid, 'I': Igrid}
+    return {"wavelength": wavelength, "mu_grid": mu_grid, "I": Igrid}

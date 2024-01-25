@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def outgoing_chromo_ray_mu(mu, altitude_m):
     """
     Compute the outgoing mu (relative to the surface normal at the location of
@@ -19,7 +20,7 @@ def outgoing_chromo_ray_mu(mu, altitude_m):
         The requested outgoing mu, or None if the ray does not hit the Sun.
     """
     Rm = 695_700_000
-    outMu2 = 1.0 - (1.0-mu**2) * (Rm + altitude_m)**2 / Rm**2
+    outMu2 = 1.0 - (1.0 - mu**2) * (Rm + altitude_m) ** 2 / Rm**2
     if outMu2 < 0.0:
         # No hit.
         return None

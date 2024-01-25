@@ -7,6 +7,7 @@ from .bc_provider import PromBcProvider
 from .limb_darkening import outgoing_chromo_ray_mu
 from .prom_bc import PromBc
 
+
 class UniformJPromBc(PromBc):
     r"""
     Simple boundary condition that supplies :math:`J_\nu` at each incoming ray
@@ -31,14 +32,23 @@ class UniformJPromBc(PromBc):
     Nrays : int, optional
         The number of Gauss-Legendre rays to be used to compute J. Default: 50.
     """
-    def __init__(self, projection: str, bc_provider: PromBcProvider, altitude_m: float,
-                 prom_upper_lower: Optional[str]=None, Nrays: int=50):
+
+    def __init__(
+        self,
+        projection: str,
+        bc_provider: PromBcProvider,
+        altitude_m: float,
+        prom_upper_lower: Optional[str] = None,
+        Nrays: int = 50,
+    ):
         self.provider = bc_provider
         self.projection = projection
         self.altitude = altitude_m
 
         if projection not in ["prominence", "filament"]:
-            raise ValueError(f"Expected projection ({projection}), to be 'prominence' or 'filament'")
+            raise ValueError(
+                f"Expected projection ({projection}), to be 'prominence' or 'filament'"
+            )
         self.projection = projection
 
         self.bc_type = prom_upper_lower
@@ -51,7 +61,6 @@ class UniformJPromBc(PromBc):
 
         self.final_synthesis = False
 
-
     def update_bc(self, atmos, spect):
         Nmu = atmos.muz.shape[0]
         Nwave = spect.wavelength.shape[0]
@@ -60,8 +69,8 @@ class UniformJPromBc(PromBc):
         Iinterp = np.zeros((Nwave, Nmu, 1))
 
         final_synth = self.final_synthesis if Nmu != 1 else True
-        is_prom = (self.projection == "prominence")
-        lower = (self.bc_type == "lower")
+        is_prom = self.projection == "prominence"
+        lower = self.bc_type == "lower"
         multi_I = self.provider.specialised_multi_I
 
         if final_synth:
@@ -73,8 +82,7 @@ class UniformJPromBc(PromBc):
                     mu_out = atmos.muz[mu_idx]
 
                 if is_prom:
-                    if ((lower and mu_out >= 0.0)
-                        or ((not lower) and mu_out <= 0.0)):
+                    if (lower and mu_out >= 0.0) or ((not lower) and mu_out <= 0.0):
                         # NOTE(cmo): From corona, so zero
                         mu_ins.append(None)
                         continue
@@ -84,9 +92,13 @@ class UniformJPromBc(PromBc):
                 mu_in = outgoing_chromo_ray_mu(mu_out, self.altitude)
                 mu_ins.append(mu_in)
                 if not multi_I:
-                    Iinterp[:, mu_idx, 0] = self.provider.compute_I(spect.wavelength, mu_in)
+                    Iinterp[:, mu_idx, 0] = self.provider.compute_I(
+                        spect.wavelength, mu_in
+                    )
             if multi_I:
-                Iinterp[:, :, 0] = self.provider.compute_multi_I(spect.wavelength, mu_ins)
+                Iinterp[:, :, 0] = self.provider.compute_multi_I(
+                    spect.wavelength, mu_ins
+                )
         else:
             J = np.zeros(Nwave)
             if multi_I:
@@ -122,11 +134,12 @@ class UniformJPromBc(PromBc):
                 any_param_change = True
 
         try:
-            if (self.muz.shape[0] != self.muz_computed.shape[0]
+            if (
+                self.muz.shape[0] != self.muz_computed.shape[0]
                 or np.any(self.muz != self.muz_computed)
                 or self.wavelength_computed.shape[0] != spect.wavelength.shape[0]
-                or np.any(self.wavelength_computed != spect.wavelength)):
-
+                or np.any(self.wavelength_computed != spect.wavelength)
+            ):
                 any_param_change = True
         except AttributeError:
             any_param_change = True

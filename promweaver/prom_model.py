@@ -13,13 +13,16 @@ class PromModel:
     such, your `__init__` needs to provide `ctx`: a `lw.Context` describing
     the model to compute.
     """
+
     def __init__(self, ctx: lw.Context):
         self.ctx = ctx
 
-    def compute_rays(self, wavelengths: Optional[np.ndarray]=None, 
-                    mus: Optional[Union[float, np.ndarray, dict]]=None,
-                    compute_rays_kwargs: Optional[dict]=None
-                    ):
+    def compute_rays(
+        self,
+        wavelengths: Optional[np.ndarray] = None,
+        mus: Optional[Union[float, np.ndarray, dict]] = None,
+        compute_rays_kwargs: Optional[dict] = None,
+    ):
         """
         Compute the formal solution through a converged simulation for a
         particular ray (or set of rays). The wavelength range can be adjusted
@@ -49,18 +52,29 @@ class PromModel:
             wavelengths = self.ctx.spect.wavelength
 
         self.ctx.atmos.pyAtmos.final_synthesis = True
-        I = self.ctx.compute_rays(wavelengths=wavelengths, mus=mus, **compute_rays_kwargs)
+        I = self.ctx.compute_rays(
+            wavelengths=wavelengths, mus=mus, **compute_rays_kwargs
+        )
         self.ctx.atmos.pyAtmos.final_synthesis = False
         return I
 
-    def iterate_se(self, Nscatter: int=3, NmaxIter: int=2000, prd: bool=False,
-                   JTol: float=5e-3, popsTol: float=1e-3, rhoTol: Optional[float]=None,
-                   prdIterTol: float=1e-2, maxPrdSubIter: int=3, printInterval: float=0.2,
-                   quiet: bool=False,
-                   convergence: Optional[Type[lw.ConvergenceCriteria]]=None,
-                   returnFinalConvergence: bool=False,
-                   update_model: Optional[Callable[..., None]]=None,
-                   update_model_kwargs: Optional[dict]=None):
+    def iterate_se(
+        self,
+        Nscatter: int = 3,
+        NmaxIter: int = 2000,
+        prd: bool = False,
+        JTol: float = 5e-3,
+        popsTol: float = 1e-3,
+        rhoTol: Optional[float] = None,
+        prdIterTol: float = 1e-2,
+        maxPrdSubIter: int = 3,
+        printInterval: float = 0.2,
+        quiet: bool = False,
+        convergence: Optional[Type[lw.ConvergenceCriteria]] = None,
+        returnFinalConvergence: bool = False,
+        update_model: Optional[Callable[..., None]] = None,
+        update_model_kwargs: Optional[dict] = None,
+    ):
         """
         Iterate the context towards statistical equilibrium solution. Slightly
         modified variant of the core `lw.iterate_ctx_se` to add and handle the
@@ -125,7 +139,7 @@ class PromModel:
         """
         prevPrint = 0.0
         printNow = True
-        alwaysPrint = (printInterval == 0.0)
+        alwaysPrint = printInterval == 0.0
         startTime = time.time()
         ctx = self.ctx
 
@@ -137,29 +151,30 @@ class PromModel:
         conv = convergence(ctx, JTol, popsTol, rhoTol)
 
         for it in range(NmaxIter):
-            JUpdate : lw.IterationUpdate = ctx.formal_sol_gamma_matrices()
-            if (not quiet and
-                (alwaysPrint or ((now := time.time()) >= prevPrint + printInterval))):
+            JUpdate: lw.IterationUpdate = ctx.formal_sol_gamma_matrices()
+            if not quiet and (
+                alwaysPrint or ((now := time.time()) >= prevPrint + printInterval)
+            ):
                 printNow = True
                 if not alwaysPrint:
                     prevPrint = now
 
             if not quiet and printNow:
-                print(f'-- Iteration {it}:')
+                print(f"-- Iteration {it}:")
                 print(JUpdate.compact_representation())
 
             if it < Nscatter:
                 if not quiet and printNow:
-                    print('    (Lambda iterating background)')
+                    print("    (Lambda iterating background)")
                 # NOTE(cmo): reset print state
                 printNow = False
                 continue
 
-            popsUpdate : lw.IterationUpdate = ctx.stat_equil()
+            popsUpdate: lw.IterationUpdate = ctx.stat_equil()
             if not quiet and printNow:
                 print(popsUpdate.compact_representation())
 
-            dRhoUpdate : Optional[lw.IterationUpdate]
+            dRhoUpdate: Optional[lw.IterationUpdate]
             if prd:
                 dRhoUpdate = ctx.prd_redistribute(maxIter=maxPrdSubIter, tol=prdIterTol)
                 if not quiet and printNow and dRhoUpdate is not None:
@@ -173,20 +188,22 @@ class PromModel:
                 if not quiet:
                     endTime = time.time()
                     duration = endTime - startTime
-                    line = '-' * 80
+                    line = "-" * 80
                     if printNow:
-                        print('Final Iteration shown above.')
+                        print("Final Iteration shown above.")
                     else:
                         print(line)
-                        print(f'Final Iteration: {it}')
+                        print(f"Final Iteration: {it}")
                         print(line)
                         print(JUpdate.compact_representation())
                         print(popsUpdate.compact_representation())
                         if prd and dRhoUpdate is not None:
                             print(dRhoUpdate.compact_representation())
                     print(line)
-                    print(f'Context converged to statistical equilibrium in {it}'
-                        f' iterations after {duration:.2f} s.')
+                    print(
+                        f"Context converged to statistical equilibrium in {it}"
+                        f" iterations after {duration:.2f} s."
+                    )
                     print(line)
                 if returnFinalConvergence:
                     finalConvergence = [JUpdate, popsUpdate]
@@ -203,19 +220,21 @@ class PromModel:
             printNow = False
         else:
             if not quiet:
-                line = '-' * 80
+                line = "-" * 80
                 endTime = time.time()
                 duration = endTime - startTime
                 print(line)
-                print(f'Final Iteration: {it}')
+                print(f"Final Iteration: {it}")
                 print(line)
                 print(JUpdate.compact_representation())
                 print(popsUpdate.compact_representation())
                 if prd and dRhoUpdate is not None:
                     print(dRhoUpdate.compact_representation())
                 print(line)
-                print(f'Context FAILED to converge to statistical equilibrium after {it}'
-                    f' iterations (took {duration:.2f} s).')
+                print(
+                    f"Context FAILED to converge to statistical equilibrium after {it}"
+                    f" iterations (took {duration:.2f} s)."
+                )
                 print(line)
             if returnFinalConvergence:
                 finalConvergence = [JUpdate, popsUpdate]

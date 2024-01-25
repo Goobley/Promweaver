@@ -1,4 +1,8 @@
-from .bc_provider import PromBcProvider, TabulatedPromBcProvider, DynamicContextPromBcProvider
+from .bc_provider import (
+    PromBcProvider,
+    TabulatedPromBcProvider,
+    DynamicContextPromBcProvider,
+)
 from .compute_bc import compute_falc_bc_ctx, tabulate_bc
 from .cone_prom_bc import ConePromBc
 from .iso_prom import IsoPromModel

@@ -16,7 +16,8 @@ class PromBcProvider:
         worth calling compute_multi_I (i.e. there are significant optimisations
         to doing so).
     """
-    def __init__(self, specialised_multi_I: bool=False):
+
+    def __init__(self, specialised_multi_I: bool = False):
         self.specialised_multi_I = specialised_multi_I
 
     def compute_I(self, wavelength: np.ndarray, mu: Optional[float]):
@@ -64,6 +65,7 @@ class TabulatedPromBcProvider(PromBcProvider):
         linear. If a function is provided then it must have the same signature
         as np.interp/weno4
     """
+
     def __init__(self, wavelength, mu_grid, I, interp=None):
         self.wavelength = np.asarray(wavelength)
         self.mu_grid = np.asarray(mu_grid)
@@ -90,7 +92,9 @@ class TabulatedPromBcProvider(PromBcProvider):
             if alpha <= 0.0:
                 Igrid = self.I[:, int_part]
             else:
-                Igrid = (1.0 - alpha) * self.I[:, int_part] + alpha * self.I[:, int_part+1]
+                Igrid = (1.0 - alpha) * self.I[:, int_part] + alpha * self.I[
+                    :, int_part + 1
+                ]
 
         return weno4(wavelength, self.wavelength, Igrid)
 
@@ -98,7 +102,9 @@ class TabulatedPromBcProvider(PromBcProvider):
         if self.interp is None:
             return super().compute_multi_I(wavelength, mus)
 
-        valid_mu_idxs = np.array([i for i, mu in enumerate(mus) if mu is not None], dtype=np.int64)
+        valid_mu_idxs = np.array(
+            [i for i, mu in enumerate(mus) if mu is not None], dtype=np.int64
+        )
         valid_mus = np.array([mu for mu in mus if mu is not None])
 
         mu_interp = np.zeros((self.wavelength.shape[0], len(mus)))
@@ -123,6 +129,7 @@ class DynamicContextPromBcProvider(PromBcProvider):
         The Lightweaver Context representing the chromospheric model to take
         into account, ready for `compute_rays` to be called.
     """
+
     def __init__(self, ctx: lw.Context):
         self.ctx = ctx
         super().__init__(specialised_multi_I=True)
@@ -135,7 +142,9 @@ class DynamicContextPromBcProvider(PromBcProvider):
         return self.ctx.compute_rays(wavelengths=wavelength, mus=mu)
 
     def compute_multi_I(self, wavelength: np.ndarray, mus: List[Optional[float]]):
-        valid_mu_idxs = np.array([i for i, mu in enumerate(mus) if mu is not None], dtype=np.int64)
+        valid_mu_idxs = np.array(
+            [i for i, mu in enumerate(mus) if mu is not None], dtype=np.int64
+        )
         valid_mus = np.array([mu for mu in mus if mu is not None])
 
         result = np.zeros((wavelength.shape[0], len(mus)))
