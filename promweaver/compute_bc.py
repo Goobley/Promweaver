@@ -1,3 +1,4 @@
+import gc
 from typing import List, Optional
 
 import lightweaver as lw
@@ -39,9 +40,11 @@ def compute_falc_bc_ctx(active_atoms : List[str], atomic_models : Optional[List[
     lw.iterate_ctx_se(ctx, prd=prd, quiet=quiet)
     return ctx
 
-def tabulate_bc(ctx: lw.Context, wavelength: Optional[np.ndarray]=None, 
-                mu_grid: Optional[np.ndarray]=None, 
-                compute_rays_kwargs: Optional[dict]=None):
+def tabulate_bc(ctx: lw.Context, wavelength: Optional[np.ndarray]=None,
+                mu_grid: Optional[np.ndarray]=None,
+                compute_rays_kwargs: Optional[dict]=None,
+                max_rays: int=10,
+    ):
     """
     Computes the necessary data for a `TabulatedPromBcProvider` from a Context
     (e.g. from `compute_falc_bc_ctx`).
@@ -59,6 +62,11 @@ def tabulate_bc(ctx: lw.Context, wavelength: Optional[np.ndarray]=None,
         boundary condition table. Default: `np.linspace(0.01, 1.0, 100)`.
     compute_rays_kwargs : dict, optional
         Any extra kwargs to be passed to `compute_rays` (e.g. `refinePrd`).
+    max_rays : int, optional
+        The maximum number of rays to be computed simultaneously. The higher
+        this number is the more efficient the process will be, but memory
+        consumption scales linearly (with a big coefficient with this number),
+        default 10. If set <= 0 the limit is taken to be infinite.
 
     Returns
     -------
@@ -74,6 +82,25 @@ def tabulate_bc(ctx: lw.Context, wavelength: Optional[np.ndarray]=None,
 
     if compute_rays_kwargs is None:
         compute_rays_kwargs = {}
-    
-    Igrid = ctx.compute_rays(wavelengths=wavelength, mus=mu_grid, **compute_rays_kwargs)
+
+    if max_rays < 1:
+        Igrid = ctx.compute_rays(wavelengths=wavelength, mus=mu_grid, **compute_rays_kwargs)
+    else:
+        Igrid = np.zeros((wavelength.shape[0], mu_grid.shape[0]))
+        num_batches = (mu_grid.shape[0] + max_rays - 1) // max_rays
+        for batch in range(num_batches):
+            batch_start = batch * max_rays
+            batch_end = min((batch + 1) * max_rays, mu_grid.shape[0])
+
+            Igrid[:, batch_start:batch_end] = ctx.compute_rays(
+                wavelengths=wavelength,
+                mus=mu_grid[batch_start:batch_end],
+                **compute_rays_kwargs,
+            )
+            # NOTE(cmo): I don't love doing this, but it kicks python to clean
+            # up the intermediate context immediately, since this is for
+            # conserving memory, it's worth the unsightliness + small
+            # performance hit.
+            gc.collect()
+
     return {'wavelength': wavelength, 'mu_grid': mu_grid, 'I': Igrid}
