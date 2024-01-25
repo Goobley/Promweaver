@@ -1,19 +1,22 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>promweaver.cone_prom_bc &mdash; Promweaver  documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -24,11 +27,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> Promweaver
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Promweaver
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -52,9 +59,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Module code</a> &raquo;</li>
-      <li>promweaver.cone_prom_bc</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">promweaver.cone_prom_bc</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -74,11 +81,15 @@
 <span class="kn">from</span> <span class="nn">.limb_darkening</span> <span class="kn">import</span> <span class="n">outgoing_chromo_ray_mu</span>
 <span class="kn">from</span> <span class="nn">.prom_bc</span> <span class="kn">import</span> <span class="n">PromBc</span>
 
-<div class="viewcode-block" id="ConeRadParams"><a class="viewcode-back" href="../../promweaver-api.html#promweaver.cone_prom_bc.ConeRadParams">[docs]</a><span class="nd">@dataclass</span>
+
+<div class="viewcode-block" id="ConeRadParams">
+<a class="viewcode-back" href="../../promweaver-api.html#promweaver.cone_prom_bc.ConeRadParams">[docs]</a>
+<span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">ConeRadParams</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Dataclass to compact the parameters to `compute_I_cone` which were getting out of hand.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">wavelength</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
     <span class="n">z_mu_cone</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
     <span class="n">w_mu_cone</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
@@ -89,12 +100,13 @@
     <span class="n">provider</span><span class="p">:</span> <span class="n">PromBcProvider</span></div>
 
 
+
 <span class="k">def</span> <span class="nf">compute_I_cone</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">ConeRadParams</span><span class="p">):</span>
     <span class="c1"># NOTE(cmo): Plenty of enhancements could be made here. It may be a good</span>
     <span class="c1"># idea to hoist the multi_I out a level above, but it could also be become a</span>
     <span class="c1"># silly number of rays to ask the Context for in the DynamicBc case.</span>
     <span class="c1"># More of the maths could be vectorised too.</span>
-    <span class="n">is_prom</span>  <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">projection</span> <span class="o">==</span> <span class="s2">&quot;prominence&quot;</span>
+    <span class="n">is_prom</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">projection</span> <span class="o">==</span> <span class="s2">&quot;prominence&quot;</span>
     <span class="n">multi_I</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">specialised_multi_I</span>
     <span class="n">Iin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">wavelength</span><span class="p">)</span>
     <span class="n">Icone</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">wavelength</span><span class="p">)</span>
@@ -102,14 +114,18 @@
     <span class="k">if</span> <span class="n">multi_I</span><span class="p">:</span>
         <span class="n">mu_ins</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">cone_idx</span><span class="p">,</span> <span class="n">zmu_c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">z_mu_cone</span><span class="p">):</span>
-            <span class="n">sinTheta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">zmu_c</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="c1">#projection of muz onto the y-x plane</span>
+            <span class="n">sinTheta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">zmu_c</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># projection of muz onto the y-x plane</span>
             <span class="k">for</span> <span class="n">phi_ray_idx</span><span class="p">,</span> <span class="n">phi</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">phi_nodes</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">is_prom</span><span class="p">:</span>
-                    <span class="n">mu_out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span> <span class="o">*</span> <span class="n">sinTheta</span> <span class="c1">#Projection of the muOut from the y-x plane to the x axis in the prominence case</span>
+                    <span class="n">mu_out</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span> <span class="o">*</span> <span class="n">sinTheta</span>
+                    <span class="p">)</span>  <span class="c1"># Projection of the muOut from the y-x plane to the x axis in the prominence case</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">mu_out</span> <span class="o">=</span> <span class="n">zmu_c</span> <span class="c1">#Raw zmu in the filament case</span>
+                    <span class="n">mu_out</span> <span class="o">=</span> <span class="n">zmu_c</span>  <span class="c1"># Raw zmu in the filament case</span>
 
-                <span class="n">mu_in</span> <span class="o">=</span> <span class="n">outgoing_chromo_ray_mu</span><span class="p">(</span><span class="n">mu_out</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">alt</span><span class="p">)</span> <span class="c1">#Find the input ray from the chromosphere based on this muOut</span>
+                <span class="n">mu_in</span> <span class="o">=</span> <span class="n">outgoing_chromo_ray_mu</span><span class="p">(</span>
+                    <span class="n">mu_out</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">alt</span>
+                <span class="p">)</span>  <span class="c1"># Find the input ray from the chromosphere based on this muOut</span>
                 <span class="n">mu_ins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mu_in</span><span class="p">)</span>
 
         <span class="n">Is</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">compute_multi_I</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">wavelength</span><span class="p">,</span> <span class="n">mu_ins</span><span class="p">)</span>
@@ -121,29 +137,38 @@
             <span class="n">Iin</span> <span class="o">+=</span> <span class="n">Icone</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">w_mu_cone</span><span class="p">[</span><span class="n">cone_idx</span><span class="p">]</span>
             <span class="c1"># NOTE(cmo): Trim the batch of Is we just integrated for the next loop iteration</span>
             <span class="k">if</span> <span class="n">Is</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">p</span><span class="o">.</span><span class="n">phi_nodes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-                <span class="n">Is</span> <span class="o">=</span> <span class="n">Is</span><span class="p">[:,</span> <span class="n">p</span><span class="o">.</span><span class="n">phi_nodes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:]</span>
+                <span class="n">Is</span> <span class="o">=</span> <span class="n">Is</span><span class="p">[:,</span> <span class="n">p</span><span class="o">.</span><span class="n">phi_nodes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">:]</span>
         <span class="k">return</span> <span class="n">Iin</span>
-
 
     <span class="c1"># NOTE(cmo): Non-multi-I case; the default</span>
     <span class="k">for</span> <span class="n">cone_idx</span><span class="p">,</span> <span class="n">zmu_c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">z_mu_cone</span><span class="p">):</span>
-        <span class="n">sinTheta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">zmu_c</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="c1">#projection of muz onto the y-x plane</span>
+        <span class="n">sinTheta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">zmu_c</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># projection of muz onto the y-x plane</span>
         <span class="n">Icone</span><span class="p">[:]</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="k">for</span> <span class="n">phi_ray_idx</span><span class="p">,</span> <span class="n">phi</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">phi_nodes</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">is_prom</span><span class="p">:</span>
-                <span class="n">mu_out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span> <span class="o">*</span> <span class="n">sinTheta</span> <span class="c1">#Projection of the muOut from the y-x plane to the x axis in the prominence case</span>
+                <span class="n">mu_out</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span> <span class="o">*</span> <span class="n">sinTheta</span>
+                <span class="p">)</span>  <span class="c1"># Projection of the muOut from the y-x plane to the x axis in the prominence case</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">mu_out</span> <span class="o">=</span> <span class="n">zmu_c</span> <span class="c1">#Raw zmu in the filament case</span>
+                <span class="n">mu_out</span> <span class="o">=</span> <span class="n">zmu_c</span>  <span class="c1"># Raw zmu in the filament case</span>
 
-            <span class="n">mu_in</span> <span class="o">=</span> <span class="n">outgoing_chromo_ray_mu</span><span class="p">(</span><span class="n">mu_out</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">alt</span><span class="p">)</span> <span class="c1">#Find the input ray from the chromosphere based on this muOut</span>
-            <span class="n">Icone</span> <span class="o">+=</span> <span class="n">p</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">compute_I</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">wavelength</span><span class="p">,</span> <span class="n">mu_in</span><span class="p">)</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">w_phi_nodes</span><span class="p">[</span><span class="n">phi_ray_idx</span><span class="p">]</span>
+            <span class="n">mu_in</span> <span class="o">=</span> <span class="n">outgoing_chromo_ray_mu</span><span class="p">(</span>
+                <span class="n">mu_out</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">alt</span>
+            <span class="p">)</span>  <span class="c1"># Find the input ray from the chromosphere based on this muOut</span>
+            <span class="n">Icone</span> <span class="o">+=</span> <span class="p">(</span>
+                <span class="n">p</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">compute_I</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">wavelength</span><span class="p">,</span> <span class="n">mu_in</span><span class="p">)</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">w_phi_nodes</span><span class="p">[</span><span class="n">phi_ray_idx</span><span class="p">]</span>
+            <span class="p">)</span>
 
-        <span class="n">Iin</span> <span class="o">+=</span> <span class="n">Icone</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">w_mu_cone</span><span class="p">[</span><span class="n">cone_idx</span><span class="p">]</span> <span class="c1">#Once the cone has been summed, multiply it by the cone weight from the original GL quadrature set within the prominence model</span>
+        <span class="n">Iin</span> <span class="o">+=</span> <span class="p">(</span>
+            <span class="n">Icone</span> <span class="o">*</span> <span class="n">p</span><span class="o">.</span><span class="n">w_mu_cone</span><span class="p">[</span><span class="n">cone_idx</span><span class="p">]</span>
+        <span class="p">)</span>  <span class="c1"># Once the cone has been summed, multiply it by the cone weight from the original GL quadrature set within the prominence model</span>
     <span class="k">return</span> <span class="n">Iin</span>
 
 
-<div class="viewcode-block" id="ConePromBc"><a class="viewcode-back" href="../../promweaver-api.html#promweaver.cone_prom_bc.ConePromBc">[docs]</a><span class="k">class</span> <span class="nc">ConePromBc</span><span class="p">(</span><span class="n">PromBc</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="ConePromBc">
+<a class="viewcode-back" href="../../promweaver-api.html#promweaver.cone_prom_bc.ConePromBc">[docs]</a>
+<span class="k">class</span> <span class="nc">ConePromBc</span><span class="p">(</span><span class="n">PromBc</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Complex boundary condition that supplies an averaged :math:`I_\nu` distinct</span>
 <span class="sd">    for each ray of the boundary condition. The primary use case for this is</span>
 <span class="sd">    better handling complex velocity fields. In the filament view, this is</span>
@@ -180,18 +205,30 @@
 <span class="sd">        when one ray (out of few) starts to miss the Sun with increasing</span>
 <span class="sd">        altitude. Default: 10.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">bc_provider</span><span class="p">:</span> <span class="n">PromBcProvider</span><span class="p">,</span> <span class="n">altitude_m</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                 <span class="n">prom_upper_lower</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Nphi_nodes</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">Ncone_rays</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">projection</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">bc_provider</span><span class="p">:</span> <span class="n">PromBcProvider</span><span class="p">,</span>
+        <span class="n">altitude_m</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">prom_upper_lower</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">Nphi_nodes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span>
+        <span class="n">Ncone_rays</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">provider</span> <span class="o">=</span> <span class="n">bc_provider</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">projection</span> <span class="o">=</span> <span class="n">projection</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">altitude</span> <span class="o">=</span> <span class="n">altitude_m</span>
         <span class="k">if</span> <span class="n">projection</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;prominence&quot;</span><span class="p">,</span> <span class="s2">&quot;filament&quot;</span><span class="p">]:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected projection (</span><span class="si">{</span><span class="n">projection</span><span class="si">}</span><span class="s2">), to be &#39;prominence&#39; or &#39;filament&#39;&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Expected projection (</span><span class="si">{</span><span class="n">projection</span><span class="si">}</span><span class="s2">), to be &#39;prominence&#39; or &#39;filament&#39;&quot;</span>
+            <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">projection</span> <span class="o">=</span> <span class="n">projection</span>
 
         <span class="k">if</span> <span class="n">prom_upper_lower</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">projection</span> <span class="o">==</span> <span class="s2">&quot;prominence&quot;</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">prom_upper_lower</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;upper&quot;</span><span class="p">,</span> <span class="s2">&quot;lower&quot;</span><span class="p">]:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected prom_upper_lower (</span><span class="si">{</span><span class="n">prom_upper_lower</span><span class="si">}</span><span class="s2">), to be &#39;upper&#39; or &#39;lower&#39;&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Expected prom_upper_lower (</span><span class="si">{</span><span class="n">prom_upper_lower</span><span class="si">}</span><span class="s2">), to be &#39;upper&#39; or &#39;lower&#39;&quot;</span>
+                <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">bc_type</span> <span class="o">=</span> <span class="n">prom_upper_lower</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">bc_type</span> <span class="o">=</span> <span class="s2">&quot;lower&quot;</span>
@@ -200,16 +237,15 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">projection</span> <span class="o">==</span> <span class="s2">&quot;filament&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">Nphi_nodes</span> <span class="o">=</span> <span class="mi">1</span>
 
-        <span class="c1">#These are the samplings for the cones i.e., 10 additional rays around the prom GL quadrature</span>
+        <span class="c1"># These are the samplings for the cones i.e., 10 additional rays around the prom GL quadrature</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Ncone_rays</span> <span class="o">=</span> <span class="n">Ncone_rays</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">x_cone</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_cone</span> <span class="o">=</span> <span class="n">leggauss</span><span class="p">(</span><span class="n">Ncone_rays</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">w_cone</span> <span class="o">*=</span> <span class="mf">0.5</span> <span class="c1">#LG weights always sum to two so normalise to 1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w_cone</span> <span class="o">*=</span> <span class="mf">0.5</span>  <span class="c1"># LG weights always sum to two so normalise to 1</span>
         <span class="c1"># NOTE(cmo): Final synthesis indicates that we&#39;re not worried about the correct J in the boundary condition,</span>
         <span class="c1"># and instead need for the ray to sample the atmosphere directly.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">final_synthesis</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="c1"># TODO(cmo): Warn if Nrays is small? Maybe compute an error on J by default?</span>
-
 
     <span class="k">def</span> <span class="nf">update_bc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atmos</span><span class="p">,</span> <span class="n">spect</span><span class="p">):</span>
         <span class="n">Nmu</span> <span class="o">=</span> <span class="n">atmos</span><span class="o">.</span><span class="n">muz</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -225,8 +261,8 @@
         <span class="n">w_phi_nodes</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">w_phi_nodes</span><span class="p">)</span>
 
         <span class="n">final_synth</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_synthesis</span> <span class="k">if</span> <span class="n">Nmu</span> <span class="o">!=</span> <span class="mi">1</span> <span class="k">else</span> <span class="kc">True</span>
-        <span class="n">is_prom</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">projection</span> <span class="o">==</span> <span class="s2">&quot;prominence&quot;</span><span class="p">)</span>
-        <span class="n">lower</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bc_type</span> <span class="o">==</span> <span class="s2">&quot;lower&quot;</span><span class="p">)</span>
+        <span class="n">is_prom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projection</span> <span class="o">==</span> <span class="s2">&quot;prominence&quot;</span>
+        <span class="n">lower</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bc_type</span> <span class="o">==</span> <span class="s2">&quot;lower&quot;</span>
         <span class="n">multi_I</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">specialised_multi_I</span>
 
         <span class="n">mu_ins</span> <span class="o">=</span> <span class="p">[]</span>
@@ -238,8 +274,7 @@
                     <span class="n">mu_out</span> <span class="o">=</span> <span class="n">atmos</span><span class="o">.</span><span class="n">muz</span><span class="p">[</span><span class="n">mu_idx</span><span class="p">]</span>
 
                 <span class="k">if</span> <span class="n">is_prom</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="p">((</span><span class="n">lower</span> <span class="ow">and</span> <span class="n">mu_out</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">)</span>
-                        <span class="ow">or</span> <span class="p">((</span><span class="ow">not</span> <span class="n">lower</span><span class="p">)</span> <span class="ow">and</span> <span class="n">mu_out</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">)):</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">lower</span> <span class="ow">and</span> <span class="n">mu_out</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">((</span><span class="ow">not</span> <span class="n">lower</span><span class="p">)</span> <span class="ow">and</span> <span class="n">mu_out</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">):</span>
                         <span class="c1"># NOTE(cmo): From corona, so zero</span>
                         <span class="n">mu_ins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
                         <span class="k">continue</span>
@@ -249,20 +284,40 @@
                 <span class="n">mu_in</span> <span class="o">=</span> <span class="n">outgoing_chromo_ray_mu</span><span class="p">(</span><span class="n">mu_out</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">altitude</span><span class="p">)</span>
                 <span class="n">mu_ins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mu_in</span><span class="p">)</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">multi_I</span><span class="p">:</span>
-                    <span class="n">Iinterp</span><span class="p">[:,</span> <span class="n">mu_idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">compute_I</span><span class="p">(</span><span class="n">spect</span><span class="o">.</span><span class="n">wavelength</span><span class="p">,</span> <span class="n">mu_in</span><span class="p">)</span>
+                    <span class="n">Iinterp</span><span class="p">[:,</span> <span class="n">mu_idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">compute_I</span><span class="p">(</span>
+                        <span class="n">spect</span><span class="o">.</span><span class="n">wavelength</span><span class="p">,</span> <span class="n">mu_in</span>
+                    <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># NOTE(cmo): This case is about getting correct J, won&#39;t handle negative mux</span>
                 <span class="c1"># NOTE(jmj): Construct cone quadrature around a single quadrature ray from prominence model</span>
-                <span class="n">lower_mu</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="k">if</span> <span class="n">mu_idx</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">muz</span><span class="p">[</span><span class="n">mu_idx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">muz</span><span class="p">[</span><span class="n">mu_idx</span><span class="p">])</span>
-                <span class="n">upper_mu</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="k">if</span> <span class="n">mu_idx</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">muz</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span> <span class="k">else</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">muz</span><span class="p">[</span><span class="n">mu_idx</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">muz</span><span class="p">[</span><span class="n">mu_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+                <span class="n">lower_mu</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="mf">0.0</span>
+                    <span class="k">if</span> <span class="n">mu_idx</span> <span class="o">==</span> <span class="mi">0</span>
+                    <span class="k">else</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">muz</span><span class="p">[</span><span class="n">mu_idx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">muz</span><span class="p">[</span><span class="n">mu_idx</span><span class="p">])</span>
+                <span class="p">)</span>
+                <span class="n">upper_mu</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="mf">1.0</span>
+                    <span class="k">if</span> <span class="n">mu_idx</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">muz</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+                    <span class="k">else</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">muz</span><span class="p">[</span><span class="n">mu_idx</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">muz</span><span class="p">[</span><span class="n">mu_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+                <span class="p">)</span>
                 <span class="n">cone_half_width</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">upper_mu</span> <span class="o">-</span> <span class="n">lower_mu</span><span class="p">)</span>
                 <span class="n">cone_mid</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">lower_mu</span> <span class="o">+</span> <span class="n">upper_mu</span><span class="p">)</span>
-                <span class="n">cone_zmu</span> <span class="o">=</span> <span class="n">cone_half_width</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_cone</span> <span class="o">+</span> <span class="n">cone_mid</span> <span class="c1">#xCone only represents x sampling for order NconeRays GL quadrature - then shifted based on bounds of cone</span>
-                <span class="n">cone_wmu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_cone</span> <span class="c1">#Weights correspond to the quadrature order</span>
+                <span class="n">cone_zmu</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">cone_half_width</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_cone</span> <span class="o">+</span> <span class="n">cone_mid</span>
+                <span class="p">)</span>  <span class="c1"># xCone only represents x sampling for order NconeRays GL quadrature - then shifted based on bounds of cone</span>
+                <span class="n">cone_wmu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_cone</span>  <span class="c1"># Weights correspond to the quadrature order</span>
 
                 <span class="c1"># NOTE(jmj): Compute the intensity integrated within the cone</span>
-                <span class="n">params</span> <span class="o">=</span> <span class="n">ConeRadParams</span><span class="p">(</span><span class="n">spect</span><span class="o">.</span><span class="n">wavelength</span><span class="p">,</span> <span class="n">cone_zmu</span><span class="p">,</span> <span class="n">cone_wmu</span><span class="p">,</span> <span class="n">phi_nodes</span><span class="p">,</span> <span class="n">w_phi_nodes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">altitude</span><span class="p">,</span>
-                                       <span class="bp">self</span><span class="o">.</span><span class="n">projection</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">provider</span><span class="p">)</span>
+                <span class="n">params</span> <span class="o">=</span> <span class="n">ConeRadParams</span><span class="p">(</span>
+                    <span class="n">spect</span><span class="o">.</span><span class="n">wavelength</span><span class="p">,</span>
+                    <span class="n">cone_zmu</span><span class="p">,</span>
+                    <span class="n">cone_wmu</span><span class="p">,</span>
+                    <span class="n">phi_nodes</span><span class="p">,</span>
+                    <span class="n">w_phi_nodes</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">altitude</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">projection</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">provider</span><span class="p">,</span>
+                <span class="p">)</span>
                 <span class="n">Iinterp</span><span class="p">[:,</span> <span class="n">mu_idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">compute_I_cone</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
 
                 <span class="c1"># NOTE(jmj): 0.5 multiplication to account for flipping in radial axis i.e., we don&#39;t explicitly consider coronal and so the chromospheric input would be copy-pasted there</span>
@@ -270,13 +325,15 @@
                     <span class="n">Iinterp</span><span class="p">[:,</span> <span class="n">mu_idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*=</span> <span class="mf">0.5</span>
 
         <span class="k">if</span> <span class="n">final_synth</span> <span class="ow">and</span> <span class="n">multi_I</span><span class="p">:</span>
-            <span class="n">Iinterp</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">compute_multi_I</span><span class="p">(</span><span class="n">spect</span><span class="o">.</span><span class="n">wavelength</span><span class="p">,</span> <span class="n">mu_ins</span><span class="p">)</span>
+            <span class="n">Iinterp</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">compute_multi_I</span><span class="p">(</span><span class="n">spect</span><span class="o">.</span><span class="n">wavelength</span><span class="p">,</span> <span class="n">mu_ins</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">Iinterp</span> <span class="o">=</span> <span class="n">Iinterp</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">muz_computed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">muz</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wavelength_computed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">spect</span><span class="o">.</span><span class="n">wavelength</span><span class="p">)</span>
 
-<div class="viewcode-block" id="ConePromBc.compute_bc"><a class="viewcode-back" href="../../promweaver-api.html#promweaver.cone_prom_bc.ConePromBc.compute_bc">[docs]</a>    <span class="k">def</span> <span class="nf">compute_bc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atmos</span><span class="p">,</span> <span class="n">spect</span><span class="p">):</span>
+<div class="viewcode-block" id="ConePromBc.compute_bc">
+<a class="viewcode-back" href="../../promweaver-api.html#promweaver.cone_prom_bc.ConePromBc.compute_bc">[docs]</a>
+    <span class="k">def</span> <span class="nf">compute_bc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atmos</span><span class="p">,</span> <span class="n">spect</span><span class="p">):</span>
         <span class="n">any_param_change</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_synthesis</span> <span class="o">!=</span> <span class="n">atmos</span><span class="o">.</span><span class="n">final_synthesis</span><span class="p">:</span>
@@ -288,11 +345,12 @@
                 <span class="n">any_param_change</span> <span class="o">=</span> <span class="kc">True</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">muz</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">muz_computed</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">muz</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">muz_computed</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">muz</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">muz_computed</span><span class="p">)</span>
                 <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">wavelength_computed</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">spect</span><span class="o">.</span><span class="n">wavelength</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-                <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wavelength_computed</span> <span class="o">!=</span> <span class="n">spect</span><span class="o">.</span><span class="n">wavelength</span><span class="p">)):</span>
-
+                <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wavelength_computed</span> <span class="o">!=</span> <span class="n">spect</span><span class="o">.</span><span class="n">wavelength</span><span class="p">)</span>
+            <span class="p">):</span>
                 <span class="n">any_param_change</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
             <span class="n">any_param_change</span> <span class="o">=</span> <span class="kc">True</span>
@@ -300,7 +358,9 @@
         <span class="k">if</span> <span class="n">any_param_change</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update_bc</span><span class="p">(</span><span class="n">atmos</span><span class="p">,</span> <span class="n">spect</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Iinterp</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Iinterp</span></div>
+</div>
+
 </pre></div>
 
            </div>
