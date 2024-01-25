@@ -1,4 +1,4 @@
-from typing import Optional, Type
+from typing import Dict, List, Optional, Type
 
 import lightweaver as lw
 import lightweaver.wittmann as witt
@@ -32,6 +32,15 @@ class IsoPromModel(PromModel):
         The altitude of the prominence above the solar surface [m].
     active_atoms : list of str
         The element names to make "active" i.e. consider in non-LTE.
+    detailed_atoms : list of str, optional
+        The element names to make "detailed static" i.e. consider in detail
+        radiatively.  If 'H' is set detailed then the model will be run with a
+        fixed electron density (set to balance pressure) and iterative charge
+        conservation disabled. Provide a compatible `bc_provider` as these will
+        not be taken account in the default one computed on the fly.
+    detailed_pops : dict, optional
+        A mapping from names in `detailed_atoms` to an array of their population
+        distribution of shape suitable for the model.
     atomic_models : list of `lw.AtomicModels`, optional
         The atomic models to use, a default set will be chosen if none are
         specified.
@@ -80,7 +89,9 @@ class IsoPromModel(PromModel):
         thickness,
         vturb,
         altitude,
-        active_atoms,
+        active_atoms: List[str],
+        detailed_atoms: List[str] = None,
+        detailed_pops: Optional[Dict[str, np.ndarray]] = None,
         atomic_models=None,
         Nhalf_points=45,
         Nrays=3,
@@ -109,6 +120,8 @@ class IsoPromModel(PromModel):
         self.prd = prd
         self.vlos = vlos
         self.vrad = vrad
+        # NOTE(cmo): Whether to do pressure/n_e updates, only disabled for detailed H
+        self.do_pressure_updates = True
 
         if projection == "filament" and vrad is not None and vlos is not None:
             raise ValueError(
@@ -190,7 +203,38 @@ class IsoPromModel(PromModel):
 
         self.rad_set = lw.RadiativeSet(atomic_models)
         self.rad_set.set_active(*active_atoms)
-        self.eq_pops = self.rad_set.iterate_lte_ne_eq_pops(self.atmos)
+        if detailed_atoms is not None:
+            if detailed_pops is None:
+                detailed_pops = {}
+            self.rad_set.set_detailed_static(*detailed_atoms)
+            elements = [lw.PeriodicTable[a] for a in detailed_atoms]
+            if lw.PeriodicTable['H'] in elements:
+                # NOTE(cmo): Can't do charge conservation
+                self.do_pressure_updates = False
+
+            # NOTE(cmo): Set ne now to correctly match pressure if "H" pops are provided
+            if "H" in detailed_pops:
+                new_nHTot = np.sum(detailed_pops["H"], axis=0)
+            else:
+                self.eq_pops = self.rad_set.iterate_lte_ne_eq_pops(self.atmos)
+                new_nHTot = np.sum(self.eq_pops["H"], axis=0)
+
+            new_ne = (
+                self.pressure / (lw.KBoltzmann * self.temperature)
+                - lw.DefaultAtomicAbundance.totalAbundance * new_nHTot
+            )
+            self.atmos.nHTot[:] = new_nHTot
+            self.atmos.ne[:] = new_ne
+
+            if "H" in detailed_pops:
+                self.eq_pops = self.rad_set.compute_eq_pops(self.atmos)
+
+            for ele, pops in detailed_pops.items():
+                if ele not in detailed_atoms:
+                    continue
+                self.eq_pops[ele][...] = pops
+        else:
+            self.eq_pops = self.rad_set.iterate_lte_ne_eq_pops(self.atmos)
 
         self.spect = self.rad_set.compute_wavelength_grid()
         self.Nthreads = Nthreads
@@ -202,7 +246,7 @@ class IsoPromModel(PromModel):
             self.spect,
             self.eq_pops,
             Nthreads=Nthreads,
-            conserveCharge=True,
+            conserveCharge=self.do_pressure_updates,
             **ctx_kwargs,
         )
         super().__init__(ctx)
@@ -214,36 +258,38 @@ class IsoPromModel(PromModel):
         if self.prd and "prd" not in kwargs:
             kwargs["prd"] = self.prd
 
-        def update_model(self, printNow, **kwargs):
-            # NOTE(cmo): Fix pressure throughout the atmosphere.
-            N = (
-                lw.DefaultAtomicAbundance.totalAbundance * self.atmos.nHTot
-                + self.atmos.ne
-            )
-            NError = self.pressure / (lw.KBoltzmann * self.temperature) - N
-            nHTotCorrection = NError / (
-                lw.DefaultAtomicAbundance.totalAbundance
-                + self.eq_pops["H"][-1] / self.atmos.nHTot
-            )
-            if printNow:
-                print(
-                    f"    nHTotError: {np.max(np.abs(nHTotCorrection / self.atmos.nHTot))}"
+        update_model = None
+        if self.do_pressure_updates:
+            def update_model(self, printNow, **kwargs):
+                # NOTE(cmo): Fix pressure throughout the atmosphere.
+                N = (
+                    lw.DefaultAtomicAbundance.totalAbundance * self.atmos.nHTot
+                    + self.atmos.ne
                 )
-            self.atmos.ne[:] += (
-                nHTotCorrection * self.eq_pops["H"][-1] / self.atmos.nHTot
-            )
-            prevnHTot = np.copy(self.atmos.nHTot)
-            self.atmos.nHTot[:] += nHTotCorrection
-            if np.any(self.atmos.nHTot < 0.0):
-                raise lw.ConvergenceError("nHTot driven negative!")
-            nHTotRatio = self.atmos.nHTot / prevnHTot
+                NError = self.pressure / (lw.KBoltzmann * self.temperature) - N
+                nHTotCorrection = NError / (
+                    lw.DefaultAtomicAbundance.totalAbundance
+                    + self.eq_pops["H"][-1] / self.atmos.nHTot
+                )
+                if printNow:
+                    print(
+                        f"    nHTotError: {np.max(np.abs(nHTotCorrection / self.atmos.nHTot))}"
+                    )
+                self.atmos.ne[:] += (
+                    nHTotCorrection * self.eq_pops["H"][-1] / self.atmos.nHTot
+                )
+                prevnHTot = np.copy(self.atmos.nHTot)
+                self.atmos.nHTot[:] += nHTotCorrection
+                if np.any(self.atmos.nHTot < 0.0):
+                    raise lw.ConvergenceError("nHTot driven negative!")
+                nHTotRatio = self.atmos.nHTot / prevnHTot
 
-            for atom in self.rad_set.activeAtoms:
-                p = self.eq_pops[atom.element]
-                p[...] *= nHTotRatio[None, :]
+                for atom in self.rad_set.activeAtoms:
+                    p = self.eq_pops[atom.element]
+                    p[...] *= nHTotRatio[None, :]
 
-            # TODO(cmo): Add condition to not always re-evaluate the line profiles. Maybe on ne change?
-            self.ctx.update_deps(vlos=False, background=False)
+                # TODO(cmo): Add condition to not always re-evaluate the line profiles. Maybe on ne change?
+                self.ctx.update_deps(vlos=False, background=False)
 
         return super().iterate_se(
             *args,

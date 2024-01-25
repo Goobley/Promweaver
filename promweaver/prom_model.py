@@ -75,7 +75,7 @@ class PromModel:
         update_model: Optional[Callable[..., None]] = None,
         update_model_kwargs: Optional[dict] = None,
     ):
-        """
+        r"""
         Iterate the context towards statistical equilibrium solution. Slightly
         modified variant of the core `lw.iterate_ctx_se` to add and handle the
         `update_model` callback.
