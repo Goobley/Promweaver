@@ -1,8 +1,10 @@
 from setuptools import setup
 
+
 def readme():
     with open("README.md", "r") as f:
         return f.read()
+
 
 setup(
     name="promweaver",
@@ -17,5 +19,5 @@ setup(
     description="Prominence/Filament Radiative Transfer Modelling with Lightweaver",
     long_description=readme(),
     long_description_content_type="text/markdown",
-    python_requires=">=3.8"
+    python_requires=">=3.8",
 )

@@ -9,5 +9,6 @@ from .iso_prom import IsoPromModel
 from .j_prom_bc import UniformJPromBc
 from .limb_darkening import outgoing_chromo_ray_mu
 from .pctr_prom import PctrPromModel
+from .stratified_prom import StratifiedPromModel
 from .utils import default_atomic_models
 from .version import version as __version__

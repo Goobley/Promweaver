@@ -5,12 +5,15 @@ import promweaver as pw
 import psutil
 
 process = psutil.Process()
+
+
 def print_mem():
     print(f"Mem: {process.memory_info().rss / 1024 / 1024} MB")
 
+
 Nthreads = 8
 
-active_atoms = ['H', 'Ca', 'Mg']
+active_atoms = ["H", "Ca", "Mg"]
 
 print_mem()
 bc_ctx = pw.compute_falc_bc_ctx(active_atoms, prd=True, Nthreads=Nthreads)
@@ -19,11 +22,11 @@ bc_table = pw.tabulate_bc(bc_ctx, max_rays=10)
 print_mem()
 bc_provider = pw.TabulatedPromBcProvider(**bc_table)
 
-print('---------')
+print("---------")
 
 print_mem()
 model = pw.PctrPromModel(
-    'prominence',
+    "prominence",
     cen_temperature=8000,
     tr_temperature=1e5,
     cen_pressure=0.05,
@@ -37,7 +40,7 @@ model = pw.PctrPromModel(
     Nrays=10,
     BcType=pw.ConePromBc,
     bc_provider=bc_provider,
-    prd=True
+    prd=True,
 )
 
 print_mem()
@@ -45,11 +48,9 @@ print_mem()
 model.iterate_se()
 
 detailed_atoms = ["H"]
-detailed_pops = {
-    "H": np.copy(model.eq_pops["H"])
-}
+detailed_pops = {"H": np.copy(model.eq_pops["H"])}
 model_detailed_nlte_H = pw.PctrPromModel(
-    'prominence',
+    "prominence",
     cen_temperature=8000,
     tr_temperature=1e5,
     cen_pressure=0.05,
@@ -71,11 +72,9 @@ print_mem()
 model_detailed_nlte_H.iterate_se()
 
 detailed_atoms = ["H"]
-detailed_pops = {
-    "H": np.copy(model.eq_pops["H"])
-}
+detailed_pops = {"H": np.copy(model.eq_pops["H"])}
 model_detailed_nlte_H_crd = pw.PctrPromModel(
-    'prominence',
+    "prominence",
     cen_temperature=8000,
     tr_temperature=1e5,
     cen_pressure=0.05,
@@ -92,16 +91,14 @@ model_detailed_nlte_H_crd = pw.PctrPromModel(
     BcType=pw.ConePromBc,
     bc_provider=bc_provider,
     prd=True,
-    ctx_kwargs={
-        "detailedAtomPrd": False
-    },
+    ctx_kwargs={"detailedAtomPrd": False},
 )
 print_mem()
 model_detailed_nlte_H_crd.iterate_se()
 
 # NOTE(cmo): Doing detailed Mg from the start seems to need some help... it doesn't seem to start in a sensible position. Use an H and Ca only to seed it to a good NLTE start.
 model_H_Ca = pw.PctrPromModel(
-    'prominence',
+    "prominence",
     cen_temperature=8000,
     tr_temperature=1e5,
     cen_pressure=0.05,
@@ -120,11 +117,9 @@ model_H_Ca = pw.PctrPromModel(
 model_H_Ca.iterate_se()
 
 detailed_atoms = ["Mg"]
-detailed_pops = {
-    "Mg": np.copy(model.eq_pops["Mg"])
-}
+detailed_pops = {"Mg": np.copy(model.eq_pops["Mg"])}
 model_detailed_nlte_Mg = pw.PctrPromModel(
-    'prominence',
+    "prominence",
     cen_temperature=8000,
     tr_temperature=1e5,
     cen_pressure=0.05,
@@ -151,7 +146,7 @@ model_detailed_nlte_Mg.iterate_se()
 
 detailed_atoms = ["H"]
 model_detailed_lte_H = pw.PctrPromModel(
-    'prominence',
+    "prominence",
     cen_temperature=8000,
     tr_temperature=1e5,
     cen_pressure=0.05,

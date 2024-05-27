@@ -267,7 +267,7 @@ class PctrPromModel(PromModel):
                 detailed_pops = {}
             self.rad_set.set_detailed_static(*detailed_atoms)
             elements = [lw.PeriodicTable[a] for a in detailed_atoms]
-            if lw.PeriodicTable['H'] in elements:
+            if lw.PeriodicTable["H"] in elements:
                 # NOTE(cmo): Can't do charge conservation
                 self.do_pressure_updates = False
 
@@ -318,6 +318,7 @@ class PctrPromModel(PromModel):
 
         update_model = None
         if self.do_pressure_updates:
+
             def update_model(self, printNow, **kwargs):
                 # NOTE(cmo): Fix pressure throughout the atmosphere.
                 N = (
