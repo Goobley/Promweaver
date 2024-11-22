@@ -21,6 +21,9 @@ jobs:
 
     - run: python -m pip install .
 
+    # HACK: Temporary fix for CI
+    - run: python -m pip install numpy==1.26
+
     - name: Build docs
       run: |
         cd docs
