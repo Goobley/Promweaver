@@ -16,6 +16,7 @@
       <script src="_static/documentation_options.js?v=5929fcd5"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -45,15 +46,73 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Promweaver API Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#promweaver-bc-provider-module">promweaver.bc_provider module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#promweaver-compute-bc-module">promweaver.compute_bc module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#promweaver-cone-prom-bc-module">promweaver.cone_prom_bc module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#promweaver-iso-prom-module">promweaver.iso_prom module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#promweaver-stratified-prom-module">promweaver.stratified_prom module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#promweaver-j-prom-bc-module">promweaver.j_prom_bc module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#promweaver-limb-darkening-module">promweaver.limb_darkening module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#promweaver-pctr-prom-module">promweaver.pctr_prom module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#promweaver-utils-module">promweaver.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-promweaver.bc_provider">promweaver.bc_provider module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#promweaver.bc_provider.DynamicContextPromBcProvider"><code class="docutils literal notranslate"><span class="pre">DynamicContextPromBcProvider</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#promweaver.bc_provider.DynamicContextPromBcProvider.compute_I"><code class="docutils literal notranslate"><span class="pre">DynamicContextPromBcProvider.compute_I()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#promweaver.bc_provider.DynamicContextPromBcProvider.compute_multi_I"><code class="docutils literal notranslate"><span class="pre">DynamicContextPromBcProvider.compute_multi_I()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#promweaver.bc_provider.PromBcProvider"><code class="docutils literal notranslate"><span class="pre">PromBcProvider</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#promweaver.bc_provider.PromBcProvider.compute_I"><code class="docutils literal notranslate"><span class="pre">PromBcProvider.compute_I()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#promweaver.bc_provider.PromBcProvider.compute_multi_I"><code class="docutils literal notranslate"><span class="pre">PromBcProvider.compute_multi_I()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#promweaver.bc_provider.TabulatedPromBcProvider"><code class="docutils literal notranslate"><span class="pre">TabulatedPromBcProvider</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#promweaver.bc_provider.TabulatedPromBcProvider.compute_I"><code class="docutils literal notranslate"><span class="pre">TabulatedPromBcProvider.compute_I()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#promweaver.bc_provider.TabulatedPromBcProvider.compute_multi_I"><code class="docutils literal notranslate"><span class="pre">TabulatedPromBcProvider.compute_multi_I()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-promweaver.compute_bc">promweaver.compute_bc module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#promweaver.compute_bc.compute_falc_bc_ctx"><code class="docutils literal notranslate"><span class="pre">compute_falc_bc_ctx()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#promweaver.compute_bc.tabulate_bc"><code class="docutils literal notranslate"><span class="pre">tabulate_bc()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-promweaver.cone_prom_bc">promweaver.cone_prom_bc module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#promweaver.cone_prom_bc.ConePromBc"><code class="docutils literal notranslate"><span class="pre">ConePromBc</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#promweaver.cone_prom_bc.ConePromBc.compute_bc"><code class="docutils literal notranslate"><span class="pre">ConePromBc.compute_bc()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#promweaver.cone_prom_bc.ConeRadParams"><code class="docutils literal notranslate"><span class="pre">ConeRadParams</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-promweaver.iso_prom">promweaver.iso_prom module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#promweaver.iso_prom.IsoPromModel"><code class="docutils literal notranslate"><span class="pre">IsoPromModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#promweaver.iso_prom.IsoPromModel.iterate_se"><code class="docutils literal notranslate"><span class="pre">IsoPromModel.iterate_se()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-promweaver.stratified_prom">promweaver.stratified_prom module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#promweaver.stratified_prom.StratifiedPromModel"><code class="docutils literal notranslate"><span class="pre">StratifiedPromModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#promweaver.stratified_prom.StratifiedPromModel.iterate_se"><code class="docutils literal notranslate"><span class="pre">StratifiedPromModel.iterate_se()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-promweaver.j_prom_bc">promweaver.j_prom_bc module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#promweaver.j_prom_bc.UniformJPromBc"><code class="docutils literal notranslate"><span class="pre">UniformJPromBc</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#promweaver.j_prom_bc.UniformJPromBc.compute_bc"><code class="docutils literal notranslate"><span class="pre">UniformJPromBc.compute_bc()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-promweaver.limb_darkening">promweaver.limb_darkening module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#promweaver.limb_darkening.outgoing_chromo_ray_mu"><code class="docutils literal notranslate"><span class="pre">outgoing_chromo_ray_mu()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-promweaver.pctr_prom">promweaver.pctr_prom module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#promweaver.pctr_prom.PctrPromModel"><code class="docutils literal notranslate"><span class="pre">PctrPromModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#promweaver.pctr_prom.PctrPromModel.iterate_se"><code class="docutils literal notranslate"><span class="pre">PctrPromModel.iterate_se()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-promweaver.utils">promweaver.utils module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#promweaver.utils.default_atomic_models"><code class="docutils literal notranslate"><span class="pre">default_atomic_models()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -87,32 +146,698 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
 </section>
-<section id="promweaver-bc-provider-module">
-<h2>promweaver.bc_provider module<a class="headerlink" href="#promweaver-bc-provider-module" title="Link to this heading"></a></h2>
+<section id="module-promweaver.bc_provider">
+<span id="promweaver-bc-provider-module"></span><h2>promweaver.bc_provider module<a class="headerlink" href="#module-promweaver.bc_provider" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="promweaver.bc_provider.DynamicContextPromBcProvider">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">promweaver.bc_provider.</span></span><span class="sig-name descname"><span class="pre">DynamicContextPromBcProvider</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ctx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Context</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/promweaver/bc_provider.html#DynamicContextPromBcProvider"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#promweaver.bc_provider.DynamicContextPromBcProvider" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#promweaver.bc_provider.PromBcProvider" title="promweaver.bc_provider.PromBcProvider"><code class="xref py py-class docutils literal notranslate"><span class="pre">PromBcProvider</span></code></a></p>
+<p>Class for computing the incident radiation from a Lightweaver Context</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ctx</strong> (<em>lw.Context</em>) – The Lightweaver Context representing the chromospheric model to take
+into account, ready for <cite>compute_rays</cite> to be called.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="promweaver.bc_provider.DynamicContextPromBcProvider.compute_I">
+<span class="sig-name descname"><span class="pre">compute_I</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wavelength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/promweaver/bc_provider.html#DynamicContextPromBcProvider.compute_I"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#promweaver.bc_provider.DynamicContextPromBcProvider.compute_I" title="Link to this definition"></a></dt>
+<dd><p>Return the intensity at the requested wavelengths and mu. If mu is None,
+return zeros.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="promweaver.bc_provider.DynamicContextPromBcProvider.compute_multi_I">
+<span class="sig-name descname"><span class="pre">compute_multi_I</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wavelength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/promweaver/bc_provider.html#DynamicContextPromBcProvider.compute_multi_I"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#promweaver.bc_provider.DynamicContextPromBcProvider.compute_multi_I" title="Link to this definition"></a></dt>
+<dd><p>Method to <cite>compute_I</cite> for multiple mus. It can be helpful to override
+this if your method has a significant overhead on <cite>compute_I</cite> that can
+be reduced by batching (e.g. this is very much the case for
+<cite>DynamicContextPromBcProvider</cite>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>I</strong> – The requested intensity, shape: [wavelength, mu]</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="promweaver.bc_provider.PromBcProvider">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">promweaver.bc_provider.</span></span><span class="sig-name descname"><span class="pre">PromBcProvider</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">specialised_multi_I</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/promweaver/bc_provider.html#PromBcProvider"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#promweaver.bc_provider.PromBcProvider" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Abstract base class for providing the intensity to prominence BCs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>specialised_multi_I</strong> (<em>bool</em>) – A bool that can be checked by boundary conditions to check if it is
+worth calling compute_multi_I (i.e. there are significant optimisations
+to doing so).</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="promweaver.bc_provider.PromBcProvider.compute_I">
+<span class="sig-name descname"><span class="pre">compute_I</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wavelength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/promweaver/bc_provider.html#PromBcProvider.compute_I"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#promweaver.bc_provider.PromBcProvider.compute_I" title="Link to this definition"></a></dt>
+<dd><p>Return the intensity at the requested wavelengths and mu. If mu is None,
+return zeros.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="promweaver.bc_provider.PromBcProvider.compute_multi_I">
+<span class="sig-name descname"><span class="pre">compute_multi_I</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wavelength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/promweaver/bc_provider.html#PromBcProvider.compute_multi_I"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#promweaver.bc_provider.PromBcProvider.compute_multi_I" title="Link to this definition"></a></dt>
+<dd><p>Method to <cite>compute_I</cite> for multiple mus. It can be helpful to override
+this if your method has a significant overhead on <cite>compute_I</cite> that can
+be reduced by batching (e.g. this is very much the case for
+<cite>DynamicContextPromBcProvider</cite>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>I</strong> – The requested intensity, shape: [wavelength, mu]</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="promweaver.bc_provider.TabulatedPromBcProvider">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">promweaver.bc_provider.</span></span><span class="sig-name descname"><span class="pre">TabulatedPromBcProvider</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/promweaver/bc_provider.html#TabulatedPromBcProvider"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#promweaver.bc_provider.TabulatedPromBcProvider" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#promweaver.bc_provider.PromBcProvider" title="promweaver.bc_provider.PromBcProvider"><code class="xref py py-class docutils literal notranslate"><span class="pre">PromBcProvider</span></code></a></p>
+<p>Class for tabulated incident radiation for prominence BC.
+Mu grids are interpolated linearly, wavelength grids using WENO4.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>wavelength</strong> (<em>array-like</em>) – The wavelengths at which the intensity is defined [nm]</p></li>
+<li><p><strong>mu_grid</strong> (<em>array-like</em>) – The mus at which the intensity is defined (typically 0.01 - 1.0)</p></li>
+<li><p><strong>I</strong> (<em>array-like</em><em> (</em><em>2D</em><em>)</em>) – The intensity associated with the above 2 grids [wavelength, mu], SI
+units.</p></li>
+<li><p><strong>interp</strong> (<em>interpolation function</em><em>, </em><em>optional</em>) – The interpolation function to use over mu at each wavelength, if None,
+linear. If a function is provided then it must have the same signature
+as np.interp/weno4</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="promweaver.bc_provider.TabulatedPromBcProvider.compute_I">
+<span class="sig-name descname"><span class="pre">compute_I</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wavelength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/promweaver/bc_provider.html#TabulatedPromBcProvider.compute_I"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#promweaver.bc_provider.TabulatedPromBcProvider.compute_I" title="Link to this definition"></a></dt>
+<dd><p>Return the intensity at the requested wavelengths and mu. If mu is None,
+return zeros.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="promweaver.bc_provider.TabulatedPromBcProvider.compute_multi_I">
+<span class="sig-name descname"><span class="pre">compute_multi_I</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wavelength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/promweaver/bc_provider.html#TabulatedPromBcProvider.compute_multi_I"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#promweaver.bc_provider.TabulatedPromBcProvider.compute_multi_I" title="Link to this definition"></a></dt>
+<dd><p>Method to <cite>compute_I</cite> for multiple mus. It can be helpful to override
+this if your method has a significant overhead on <cite>compute_I</cite> that can
+be reduced by batching (e.g. this is very much the case for
+<cite>DynamicContextPromBcProvider</cite>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>I</strong> – The requested intensity, shape: [wavelength, mu]</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="promweaver-compute-bc-module">
-<h2>promweaver.compute_bc module<a class="headerlink" href="#promweaver-compute-bc-module" title="Link to this heading"></a></h2>
+<section id="module-promweaver.compute_bc">
+<span id="promweaver-compute-bc-module"></span><h2>promweaver.compute_bc module<a class="headerlink" href="#module-promweaver.compute_bc" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="promweaver.compute_bc.compute_falc_bc_ctx">
+<span class="sig-prename descclassname"><span class="pre">promweaver.compute_bc.</span></span><span class="sig-name descname"><span class="pre">compute_falc_bc_ctx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">active_atoms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atomic_models</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">AtomicModel</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vz</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nthreads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quiet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctx_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Context</span></span></span><a class="reference internal" href="_modules/promweaver/compute_bc.html#compute_falc_bc_ctx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#promweaver.compute_bc.compute_falc_bc_ctx" title="Link to this definition"></a></dt>
+<dd><p>Configures and iterates a lightweaver Context with a FALC atmosphere, the
+selected atomic models, and active atoms. This can then be used with a
+DynamicContextPromBcProvider.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="promweaver.compute_bc.tabulate_bc">
+<span class="sig-prename descclassname"><span class="pre">promweaver.compute_bc.</span></span><span class="sig-name descname"><span class="pre">tabulate_bc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ctx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Context</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_grid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compute_rays_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_rays</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/promweaver/compute_bc.html#tabulate_bc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#promweaver.compute_bc.tabulate_bc" title="Link to this definition"></a></dt>
+<dd><p>Computes the necessary data for a <cite>TabulatedPromBcProvider</cite> from a Context
+(e.g. from <cite>compute_falc_bc_ctx</cite>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ctx</strong> (<em>lw.Context</em>) – The Context that will be used to compute the boundary condition (should
+already be converged, as no iteration occurs here).</p></li>
+<li><p><strong>wavelength</strong> (<em>array-like</em><em>, </em><em>optional</em>) – The wavelength grid to use for the boundary condition table. Default:
+the one used in the Context.</p></li>
+<li><p><strong>mu_grid</strong> (<em>array-like</em><em>, </em><em>optional</em>) – The grid of viewing angles (in the form of mu) to be used for the
+boundary condition table. Default: <cite>np.linspace(0.01, 1.0, 100)</cite>.</p></li>
+<li><p><strong>compute_rays_kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) – Any extra kwargs to be passed to <cite>compute_rays</cite> (e.g. <cite>refinePrd</cite>).</p></li>
+<li><p><strong>max_rays</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum number of rays to be computed simultaneously. The higher
+this number is the more efficient the process will be, but memory
+consumption scales linearly (with a big coefficient with this number),
+default 10. If set &lt;= 0 the limit is taken to be infinite.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>data</strong> – Dict with keys ‘wavelength’, ‘mu_grid’ and ‘I’ that can be splatted
+directly into a <cite>TabulatedPromBcProvider</cite> or pickled.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
-<section id="promweaver-cone-prom-bc-module">
-<h2>promweaver.cone_prom_bc module<a class="headerlink" href="#promweaver-cone-prom-bc-module" title="Link to this heading"></a></h2>
+<section id="module-promweaver.cone_prom_bc">
+<span id="promweaver-cone-prom-bc-module"></span><h2>promweaver.cone_prom_bc module<a class="headerlink" href="#module-promweaver.cone_prom_bc" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="promweaver.cone_prom_bc.ConePromBc">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">promweaver.cone_prom_bc.</span></span><span class="sig-name descname"><span class="pre">ConePromBc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bc_provider</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#promweaver.bc_provider.PromBcProvider" title="promweaver.bc_provider.PromBcProvider"><span class="pre">PromBcProvider</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">altitude_m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prom_upper_lower</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nphi_nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ncone_rays</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/promweaver/cone_prom_bc.html#ConePromBc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#promweaver.cone_prom_bc.ConePromBc" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PromBc</span></code></p>
+<p>Complex boundary condition that supplies an averaged <span class="math notranslate nohighlight">\(I_\nu\)</span> distinct
+for each ray of the boundary condition. The primary use case for this is
+better handling complex velocity fields. In the filament view, this is
+simple as mu_z for the filament and the underlying atmosphere are aligned.
+For the prominence case, we instead need to average over 1/4 of a cone (in
+the sense of a polar angle <span class="math notranslate nohighlight">\(phi\)</span> in the prominence frame) and its
+angles of intersection with the solar surface. This slightly breaks the
+axisymmetric assumptions of one-dimensional models, but the averaging
+ensures that it’s correct from an energy standpoint. In <cite>final_synthesis</cite>
+mode (by requesting a single <cite>compute_rays</cite> from the model, or setting
+<cite>final_synthesis</cite> to true on the <cite>lw.Atmosphere</cite> used in the model),
+radiation is directly sampled along the ray path, as the converged
+populations have been determined.</p>
+<p>This style of boundary condition is similar to the Gouttebroze 2005, and
+based on those described in Jenkins, Osborne &amp; Keppens 2022 (in prep.).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>projection</strong> (<em>str</em>) – filament or prominence</p></li>
+<li><p><strong>bc_provider</strong> (<a class="reference internal" href="#promweaver.bc_provider.PromBcProvider" title="promweaver.bc_provider.PromBcProvider"><em>PromBcProvider</em></a>) – The provider to be used for computing the necessary intensity values.</p></li>
+<li><p><strong>altitude_m</strong> (<em>float</em>) – The altitude of the prominence above the solar surface [m]</p></li>
+<li><p><strong>prom_upper_lower</strong> (<em>str</em><em>, </em><em>optional</em>) – Whether this is the ‘upper’ or ‘lower’ z-boundary for a prominence (not
+used in filament cases).</p></li>
+<li><p><strong>Nphi</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of trapezoidal phi rays to be used in each cone. Default: 50.</p></li>
+<li><p><strong>Ncone_rays</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of Gauss-Legendre rays per cone to supersample the range of
+mus associated with this cone. This prevents sharp changes in intensity
+when one ray (out of few) starts to miss the Sun with increasing
+altitude. Default: 10.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="promweaver.cone_prom_bc.ConePromBc.compute_bc">
+<span class="sig-name descname"><span class="pre">compute_bc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atmos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spect</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/promweaver/cone_prom_bc.html#ConePromBc.compute_bc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#promweaver.cone_prom_bc.ConePromBc.compute_bc" title="Link to this definition"></a></dt>
+<dd><p>Called when the radiation boundary condition is needed by the backend.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>atmos</strong> (<em>Atmosphere</em>) – The atmospheric object in which to compute the radiation.</p></li>
+<li><p><strong>spect</strong> (<em>LwSpectrum</em>) – The computational spectrum object provided by the Context.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>result</strong> – This function needs to return a contiguous array of shape [Nwave,
+Nrays, Nbc], where Nwave is the number of wavelengths in the
+wavelength grid, Nrays is the number of rays in the angular
+quadrature (also including up/down directions) ordered as
+specified by the mux/y/z and indexVector variables on this
+object, Nbc is the number of spatial positions the boundary
+condition needs to be defined at ordered in a flattened [Nz, Ny,
+Nx] fashion. (dtype: &lt;f8)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="promweaver.cone_prom_bc.ConeRadParams">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">promweaver.cone_prom_bc.</span></span><span class="sig-name descname"><span class="pre">ConeRadParams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wavelength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_mu_cone</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w_mu_cone</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w_phi_nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">provider</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#promweaver.bc_provider.PromBcProvider" title="promweaver.bc_provider.PromBcProvider"><span class="pre">PromBcProvider</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/promweaver/cone_prom_bc.html#ConeRadParams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#promweaver.cone_prom_bc.ConeRadParams" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Dataclass to compact the parameters to <cite>compute_I_cone</cite> which were getting out of hand.</p>
+</dd></dl>
+
 </section>
-<section id="promweaver-iso-prom-module">
-<h2>promweaver.iso_prom module<a class="headerlink" href="#promweaver-iso-prom-module" title="Link to this heading"></a></h2>
+<section id="module-promweaver.iso_prom">
+<span id="promweaver-iso-prom-module"></span><h2>promweaver.iso_prom module<a class="headerlink" href="#module-promweaver.iso_prom" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="promweaver.iso_prom.IsoPromModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">promweaver.iso_prom.</span></span><span class="sig-name descname"><span class="pre">IsoPromModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thickness</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vturb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">altitude</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active_atoms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detailed_atoms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detailed_pops</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atomic_models</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nhalf_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">45</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nrays</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nthreads</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vlos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vrad</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctx_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">BcType</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">PromBc</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bc_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bc_provider</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/promweaver/iso_prom.html#IsoPromModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#promweaver.iso_prom.IsoPromModel" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PromModel</span></code></p>
+<p>Class for “Iso” prominence simulations. Iso implies isothermal and isobaric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>projection</strong> (<em>str</em>) – Whether the object is to be treated as a “filament” or a “prominence”.</p></li>
+<li><p><strong>temperature</strong> (<em>float</em>) – The temperature of the prominence [K].</p></li>
+<li><p><strong>pressure</strong> (<em>float</em>) – The pressure of the prominence [Pa].</p></li>
+<li><p><strong>thickness</strong> (<em>float</em>) – The thickness of the prominence [m].</p></li>
+<li><p><strong>vturb</strong> (<em>float</em>) – The microturbulent velocity inside the prominence [m/s].</p></li>
+<li><p><strong>altitude</strong> (<em>float</em>) – The altitude of the prominence above the solar surface [m].</p></li>
+<li><p><strong>active_atoms</strong> (<em>list</em><em> of </em><em>str</em>) – The element names to make “active” i.e. consider in non-LTE.</p></li>
+<li><p><strong>detailed_atoms</strong> (<em>list</em><em> of </em><em>str</em><em>, </em><em>optional</em>) – The element names to make “detailed static” i.e. consider in detail
+radiatively.  If ‘H’ is set detailed then the model will be run with a
+fixed electron density (set to balance pressure) and iterative charge
+conservation disabled. Provide a compatible <cite>bc_provider</cite> as these will
+not be taken account in the default one computed on the fly.</p></li>
+<li><p><strong>detailed_pops</strong> (<em>dict</em><em>, </em><em>optional</em>) – A mapping from names in <cite>detailed_atoms</cite> to an array of their population
+distribution of shape suitable for the model.</p></li>
+<li><p><strong>atomic_models</strong> (list of <cite>lw.AtomicModels</cite>, optional) – The atomic models to use, a default set will be chosen if none are
+specified.</p></li>
+<li><p><strong>Nhalf_points</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of points in half of the slab. Default: 45.</p></li>
+<li><p><strong>Nrays</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of Gauss-Legendre angular quadrature rays to use in the
+model. Default: 3. This number will need to be set higher (e.g. 10) if
+using the <cite>ConePromBc</cite>.</p></li>
+<li><p><strong>Nthreads</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of CPU threads to use when solving the radiative transfer
+equations. Default: 1.</p></li>
+<li><p><strong>prd</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to consider the effects of partial frequency redistribution.
+Default: False.</p></li>
+<li><p><strong>vlos</strong> (<em>float</em><em>, </em><em>optional</em>) – The z-projected velocity to apply to the prominence model. Default:
+None, i.e. 0.</p></li>
+<li><p><strong>vrad</strong> (<em>float</em><em>, </em><em>optional</em>) – The Doppler-dimming radial velocity to apply. Note that for filaments
+this is the same as <cite>vlos</cite> and that should be used instead. Not fully
+supported in boundary conditions yet, (i.e. you should interpolate the
+wavelength grid first). Default: None, i.e. 0.</p></li>
+<li><p><strong>ctx_kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) – Extra kwargs to be passed when constructing the Context.</p></li>
+<li><p><strong>BcType</strong> (<em>Constructor for a type</em><em> of </em><em>PromBc</em><em>, </em><em>optional</em>) – The base type to be used for constructing the boundary conditions.
+Default: UniformJPromBc.</p></li>
+<li><p><strong>bc_kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) – Extra kwargs to be passed to the construction of the boundary conditions.</p></li>
+<li><p><strong>bc_provider</strong> (<a class="reference internal" href="#promweaver.bc_provider.PromBcProvider" title="promweaver.bc_provider.PromBcProvider"><em>PromBcProvider</em></a><em>, </em><em>optional</em>) – The provider to use for computing the radiation in the boundary
+conditions. Default: <cite>DynamicContextPromBcProvider</cite> using an
+<cite>lw.Context</cite> configured to match the current model. Note that the
+default is note very performant, but is convenient for experimenting.
+When running a grid of models, consider creating a
+<cite>TabulatedPromBcProvider</cite> using <cite>compute_falc_bc_ctx</cite> and <cite>tabulate_bc</cite>,
+since the default performs quite a few extra RT calculations.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="promweaver.iso_prom.IsoPromModel.iterate_se">
+<span class="sig-name descname"><span class="pre">iterate_se</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_model_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/promweaver/iso_prom.html#IsoPromModel.iterate_se"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#promweaver.iso_prom.IsoPromModel.iterate_se" title="Link to this definition"></a></dt>
+<dd><p>Iterate the context towards statistical equilibrium solution. Slightly
+modified variant of the core <cite>lw.iterate_ctx_se</cite> to add and handle the
+<cite>update_model</cite> callback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Nscatter</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of lambda iterations to perform for an initial estimate of J
+(default: 3).</p></li>
+<li><p><strong>NmaxIter</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum number of iterations (including Nscatter) to take (default:
+2000).</p></li>
+<li><p><strong>prd</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to perform PRD subiterations to estimate rho for PRD lines
+(default: False).</p></li>
+<li><p><strong>JTol</strong> (<em>float</em><em>, </em><em>optional</em>) – The maximum relative change in J from one iteration to the next
+(default: 5e-3).</p></li>
+<li><p><strong>popsTol</strong> (<em>float</em><em>, </em><em>optional</em>) – The maximum relative change in an atomic population from one iteration
+to the next (default: 1e-3).</p></li>
+<li><p><strong>rhoTol</strong> (<em>float</em><em>, </em><em>optional</em>) – The maximum relative change in rho for a PRD line on the final
+subiteration from one iteration to the next. If None, the change in rho
+will not be considered in judging convergence (default: None).</p></li>
+<li><p><strong>prdIterTol</strong> (<em>float</em><em>, </em><em>optional</em>) – The maximum relative change in rho for a PRD line below which PRD
+subiterations will cease for this iteration (default: 1e-2).</p></li>
+<li><p><strong>maxPrdSubIter</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum number of PRD subiterations to make, whether or not rho has
+reached the tolerance of prdIterTol (which isn’t necessary every
+iteration). (Default: 3)</p></li>
+<li><p><strong>printInterval</strong> (<em>float</em><em>, </em><em>optional</em>) – The interval between printing the update size information in seconds. A
+value of 0.0 will print every iteration (default: 0.2).</p></li>
+<li><p><strong>quiet</strong> (<em>bool</em><em>, </em><em>optional</em>) – Overrides any other print arguments and iterates silently if True.
+(Default: False).</p></li>
+<li><p><strong>convergence</strong> (<em>derived ConvergenceCriteria class</em><em>, </em><em>optional</em>) – The ConvergenceCriteria version to be used in determining convergence.
+Will be instantiated by this function, and the <cite>is_converged</cite> method
+will then be used.  (Default: DefaultConvergenceCriteria).</p></li>
+<li><p><strong>returnFinalConvergence</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to return the IterationUpdate objects used in the final
+convergence decision, if True, these will be returned in a list as the
+second return value. (Default: False).</p></li>
+<li><p><strong>update_model</strong> (<em>callable</em><em>(</em><em>PromModel</em><em>, </em><em>bool</em><em>, </em><em>**kwargs</em><em>)</em><em>, </em><em>optional</em>) – A function to use to update model parameters based on iteration
+(e.g. scale populations to maintain pressure), receives the model,
+and whether it should print based on the current iteration progress
+loop.</p></li>
+<li><p><strong>update_model_kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) – Extra kwargs to be passed to <cite>update_model</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>it</strong> (<em>int</em>) – The number of iterations taken.</p></li>
+<li><p><strong>finalIterationUpdates</strong> (<em>List[IterationUpdate], optional</em>) – The final IterationUpdates computed, if requested by <cite>returnFinalConvergence</cite>.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="promweaver-stratified-prom-module">
-<h2>promweaver.stratified_prom module<a class="headerlink" href="#promweaver-stratified-prom-module" title="Link to this heading"></a></h2>
+<section id="module-promweaver.stratified_prom">
+<span id="promweaver-stratified-prom-module"></span><h2>promweaver.stratified_prom module<a class="headerlink" href="#module-promweaver.stratified_prom" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="promweaver.stratified_prom.StratifiedPromModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">promweaver.stratified_prom.</span></span><span class="sig-name descname"><span class="pre">StratifiedPromModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vlos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vturb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">altitude</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active_atoms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detailed_atoms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detailed_pops</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pressure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nh_tot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ne</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_ionisation_fraction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conserve_charge</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conserve_pressure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atomic_models</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nrays</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nthreads</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vrad</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctx_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">BcType</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">PromBc</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bc_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bc_provider</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/promweaver/stratified_prom.html#StratifiedPromModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#promweaver.stratified_prom.StratifiedPromModel" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PromModel</span></code></p>
+<p>Class for stratified prominence simulations. These fixed stratifications are usually produced by simulations (such as those with AMRVAC), or as intermediate steps during inversions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>projection</strong> (<em>str</em>) – Whether the object is to be treated as a “filament” or a “prominence”.</p></li>
+<li><p><strong>z</strong> (<em>array</em>) – Height stratification (usual RT upside-down orientation) [m].</p></li>
+<li><p><strong>temperature</strong> (<em>array</em>) – The temperature stratification of the prominence [K].</p></li>
+<li><p><strong>vlos</strong> (<em>array</em>) – The z-projected velocity stratification to apply to the prominence model [m/s].</p></li>
+<li><p><strong>vturb</strong> (<em>array</em>) – The microturbulent velocity inside the prominence [m/s].</p></li>
+<li><p><strong>altitude</strong> (<em>float</em>) – The altitude of the prominence above the solar surface [m].</p></li>
+<li><p><strong>active_atoms</strong> (<em>list</em><em> of </em><em>str</em>) – The element names to make “active” i.e. consider in non-LTE.</p></li>
+<li><p><strong>detailed_atoms</strong> (<em>list</em><em> of </em><em>str</em><em>, </em><em>optional</em>) – The element names to make “detailed static” i.e. consider in detail
+radiatively.  If ‘H’ is set detailed then the model will be run with a
+fixed electron density (set to balance pressure) and iterative charge
+conservation disabled. Provide a compatible <cite>bc_provider</cite> as these will
+not be taken account in the default one computed on the fly.</p></li>
+<li><p><strong>detailed_pops</strong> (<em>dict</em><em>, </em><em>optional</em>) – A mapping from names in <cite>detailed_atoms</cite> to an array of their population
+distribution of shape suitable for the model.</p></li>
+<li><p><strong>pressure</strong> (<em>array</em><em>, </em><em>optional</em>) – The pressure stratification of the prominence [Pa].
+Note: pressure should be provided or at least 2 of <cite>pressure</cite>,
+<cite>nh_tot</cite>, and <cite>ne</cite>. If all three are provided, they are assumed to be
+self consistent as per <cite>P = (ne +
+lw.DefaultAtomicAbundance.totalAbundance * nh_tot) * k_B * T</cite>.</p></li>
+<li><p><strong>nh_tot</strong> (<em>array</em><em>, </em><em>optional</em>) – The hydrogen number density stratification of the prominence [m-3].
+Note: pressure should be provided or at least 2 of <cite>pressure</cite>,
+<cite>nh_tot</cite>, and <cite>ne</cite>. If all three are provided, they are assumed to be
+self consistent as per <cite>P = (ne +
+lw.DefaultAtomicAbundance.totalAbundance * nh_tot) * k_B * T</cite>.</p></li>
+<li><p><strong>ne</strong> (<em>array</em><em>, </em><em>optional</em>) – Electron density stratification [m-3]
+Note: pressure should be provided or at least 2 of <cite>pressure</cite>,
+<cite>nh_tot</cite>, and <cite>ne</cite>. If all three are provided, they are assumed to be
+self consistent as per <cite>P = (ne +
+lw.DefaultAtomicAbundance.totalAbundance * nh_tot) * k_B * T</cite>.</p></li>
+<li><p><strong>initial_ionisation_fraction</strong> (<em>float</em><em> or </em><em>array</em><em>, </em><em>optional</em>) – The initial ionisation fraction to assume when computing ne from pressure if not provided. Default: 1.0</p></li>
+<li><p><strong>conserve_charge</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to perform additional iterative procedure to balance charge
+(will affect pressure). Default: True</p></li>
+<li><p><strong>conserve_pressure</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to perform additional iterations to rebalance pressure changes from variation in ionisation to match the initial stratification (<cite>pressure</cite> if provided, or <cite>(nh_tot + ne) * k_B * T</cite> otherwise). Default: True</p></li>
+<li><p><strong>atomic_models</strong> (list of <cite>lw.AtomicModels</cite>, optional) – The atomic models to use, a default set will be chosen if none are
+specified.</p></li>
+<li><p><strong>Nrays</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of Gauss-Legendre angular quadrature rays to use in the
+model. Default: 3. This number will need to be set higher (e.g. 10) if
+using the <cite>ConePromBc</cite>.</p></li>
+<li><p><strong>Nthreads</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of CPU threads to use when solving the radiative transfer
+equations. Default: 1.</p></li>
+<li><p><strong>prd</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to consider the effects of partial frequency redistribution.
+Default: False.</p></li>
+<li><p><strong>vrad</strong> (<em>float</em><em>, </em><em>optional</em>) – The Doppler-dimming radial velocity to apply. Note that for filaments
+this is the same as <cite>vlos</cite> and that should be used instead. Not fully
+supported in boundary conditions yet, (i.e. you should interpolate the
+wavelength grid first). Default: None, i.e. 0.</p></li>
+<li><p><strong>ctx_kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) – Extra kwargs to be passed when constructing the Context.</p></li>
+<li><p><strong>BcType</strong> (<em>Constructor for a type</em><em> of </em><em>PromBc</em><em>, </em><em>optional</em>) – The base type to be used for constructing the boundary conditions.
+Default: UniformJPromBc.</p></li>
+<li><p><strong>bc_kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) – Extra kwargs to be passed to the construction of the boundary conditions.</p></li>
+<li><p><strong>bc_provider</strong> (<a class="reference internal" href="#promweaver.bc_provider.PromBcProvider" title="promweaver.bc_provider.PromBcProvider"><em>PromBcProvider</em></a><em>, </em><em>optional</em>) – The provider to use for computing the radiation in the boundary
+conditions. Default: <cite>DynamicContextPromBcProvider</cite> using an
+<cite>lw.Context</cite> configured to match the current model. Note that the
+default is note very performant, but is convenient for experimenting.
+When running a grid of models, consider creating a
+<cite>TabulatedPromBcProvider</cite> using <cite>compute_falc_bc_ctx</cite> and <cite>tabulate_bc</cite>,
+since the default performs quite a few extra RT calculations.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="promweaver.stratified_prom.StratifiedPromModel.iterate_se">
+<span class="sig-name descname"><span class="pre">iterate_se</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_model_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/promweaver/stratified_prom.html#StratifiedPromModel.iterate_se"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#promweaver.stratified_prom.StratifiedPromModel.iterate_se" title="Link to this definition"></a></dt>
+<dd><p>Iterate the context towards statistical equilibrium solution. Slightly
+modified variant of the core <cite>lw.iterate_ctx_se</cite> to add and handle the
+<cite>update_model</cite> callback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Nscatter</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of lambda iterations to perform for an initial estimate of J
+(default: 3).</p></li>
+<li><p><strong>NmaxIter</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum number of iterations (including Nscatter) to take (default:
+2000).</p></li>
+<li><p><strong>prd</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to perform PRD subiterations to estimate rho for PRD lines
+(default: False).</p></li>
+<li><p><strong>JTol</strong> (<em>float</em><em>, </em><em>optional</em>) – The maximum relative change in J from one iteration to the next
+(default: 5e-3).</p></li>
+<li><p><strong>popsTol</strong> (<em>float</em><em>, </em><em>optional</em>) – The maximum relative change in an atomic population from one iteration
+to the next (default: 1e-3).</p></li>
+<li><p><strong>rhoTol</strong> (<em>float</em><em>, </em><em>optional</em>) – The maximum relative change in rho for a PRD line on the final
+subiteration from one iteration to the next. If None, the change in rho
+will not be considered in judging convergence (default: None).</p></li>
+<li><p><strong>prdIterTol</strong> (<em>float</em><em>, </em><em>optional</em>) – The maximum relative change in rho for a PRD line below which PRD
+subiterations will cease for this iteration (default: 1e-2).</p></li>
+<li><p><strong>maxPrdSubIter</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum number of PRD subiterations to make, whether or not rho has
+reached the tolerance of prdIterTol (which isn’t necessary every
+iteration). (Default: 3)</p></li>
+<li><p><strong>printInterval</strong> (<em>float</em><em>, </em><em>optional</em>) – The interval between printing the update size information in seconds. A
+value of 0.0 will print every iteration (default: 0.2).</p></li>
+<li><p><strong>quiet</strong> (<em>bool</em><em>, </em><em>optional</em>) – Overrides any other print arguments and iterates silently if True.
+(Default: False).</p></li>
+<li><p><strong>convergence</strong> (<em>derived ConvergenceCriteria class</em><em>, </em><em>optional</em>) – The ConvergenceCriteria version to be used in determining convergence.
+Will be instantiated by this function, and the <cite>is_converged</cite> method
+will then be used.  (Default: DefaultConvergenceCriteria).</p></li>
+<li><p><strong>returnFinalConvergence</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to return the IterationUpdate objects used in the final
+convergence decision, if True, these will be returned in a list as the
+second return value. (Default: False).</p></li>
+<li><p><strong>update_model</strong> (<em>callable</em><em>(</em><em>PromModel</em><em>, </em><em>bool</em><em>, </em><em>**kwargs</em><em>)</em><em>, </em><em>optional</em>) – A function to use to update model parameters based on iteration
+(e.g. scale populations to maintain pressure), receives the model,
+and whether it should print based on the current iteration progress
+loop.</p></li>
+<li><p><strong>update_model_kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) – Extra kwargs to be passed to <cite>update_model</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>it</strong> (<em>int</em>) – The number of iterations taken.</p></li>
+<li><p><strong>finalIterationUpdates</strong> (<em>List[IterationUpdate], optional</em>) – The final IterationUpdates computed, if requested by <cite>returnFinalConvergence</cite>.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="promweaver-j-prom-bc-module">
-<h2>promweaver.j_prom_bc module<a class="headerlink" href="#promweaver-j-prom-bc-module" title="Link to this heading"></a></h2>
+<section id="module-promweaver.j_prom_bc">
+<span id="promweaver-j-prom-bc-module"></span><h2>promweaver.j_prom_bc module<a class="headerlink" href="#module-promweaver.j_prom_bc" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="promweaver.j_prom_bc.UniformJPromBc">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">promweaver.j_prom_bc.</span></span><span class="sig-name descname"><span class="pre">UniformJPromBc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bc_provider</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#promweaver.bc_provider.PromBcProvider" title="promweaver.bc_provider.PromBcProvider"><span class="pre">PromBcProvider</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">altitude_m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prom_upper_lower</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nrays</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">50</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/promweaver/j_prom_bc.html#UniformJPromBc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#promweaver.j_prom_bc.UniformJPromBc" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PromBc</span></code></p>
+<p>Simple boundary condition that supplies <span class="math notranslate nohighlight">\(J_\nu\)</span> at each incoming ray
+and frequency for the boundary condition. This value is uniform over each
+ray. Putting the boundary condition into <cite>final_synthesis</cite> mode by
+requesting a single <cite>compute_rays</cite> from the model, or setting
+<cite>final_synthesis</cite> to true on the <cite>lw.Atmosphere</cite> used in the model samples
+the radiation directly along the ray path, as the converged populations have
+been determined.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>projection</strong> (<em>str</em>) – filament or prominence</p></li>
+<li><p><strong>bc_provider</strong> (<a class="reference internal" href="#promweaver.bc_provider.PromBcProvider" title="promweaver.bc_provider.PromBcProvider"><em>PromBcProvider</em></a>) – The provider to be used for computing the necessary intensity values.</p></li>
+<li><p><strong>altitude_m</strong> (<em>float</em>) – The altitude of the prominence above the solar surface [m]</p></li>
+<li><p><strong>prom_upper_lower</strong> (<em>str</em><em>, </em><em>optional</em>) – Whether this is the ‘upper’ or ‘lower’ z-boundary for a prominence (not
+used in filament cases).</p></li>
+<li><p><strong>Nrays</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of Gauss-Legendre rays to be used to compute J. Default: 50.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="promweaver.j_prom_bc.UniformJPromBc.compute_bc">
+<span class="sig-name descname"><span class="pre">compute_bc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atmos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spect</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/promweaver/j_prom_bc.html#UniformJPromBc.compute_bc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#promweaver.j_prom_bc.UniformJPromBc.compute_bc" title="Link to this definition"></a></dt>
+<dd><p>Called when the radiation boundary condition is needed by the backend.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>atmos</strong> (<em>Atmosphere</em>) – The atmospheric object in which to compute the radiation.</p></li>
+<li><p><strong>spect</strong> (<em>LwSpectrum</em>) – The computational spectrum object provided by the Context.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>result</strong> – This function needs to return a contiguous array of shape [Nwave,
+Nrays, Nbc], where Nwave is the number of wavelengths in the
+wavelength grid, Nrays is the number of rays in the angular
+quadrature (also including up/down directions) ordered as
+specified by the mux/y/z and indexVector variables on this
+object, Nbc is the number of spatial positions the boundary
+condition needs to be defined at ordered in a flattened [Nz, Ny,
+Nx] fashion. (dtype: &lt;f8)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="promweaver-limb-darkening-module">
-<h2>promweaver.limb_darkening module<a class="headerlink" href="#promweaver-limb-darkening-module" title="Link to this heading"></a></h2>
+<section id="module-promweaver.limb_darkening">
+<span id="promweaver-limb-darkening-module"></span><h2>promweaver.limb_darkening module<a class="headerlink" href="#module-promweaver.limb_darkening" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="promweaver.limb_darkening.outgoing_chromo_ray_mu">
+<span class="sig-prename descclassname"><span class="pre">promweaver.limb_darkening.</span></span><span class="sig-name descname"><span class="pre">outgoing_chromo_ray_mu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">altitude_m</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/promweaver/limb_darkening.html#outgoing_chromo_ray_mu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#promweaver.limb_darkening.outgoing_chromo_ray_mu" title="Link to this definition"></a></dt>
+<dd><p>Compute the outgoing mu (relative to the surface normal at the location of
+the ray hit). Assumes Sun is a sphere with Radius 695,700 km.
+Radius from: 2008ApJ…675L..53H</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mu</strong> (<em>float</em>) – The mu of the ray of interest for the prominence.</p></li>
+<li><p><strong>altitude_m</strong> (<em>float</em>) – The altitude of the prominence [m].</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>mu_out</strong> – The requested outgoing mu, or None if the ray does not hit the Sun.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
-<section id="promweaver-pctr-prom-module">
-<h2>promweaver.pctr_prom module<a class="headerlink" href="#promweaver-pctr-prom-module" title="Link to this heading"></a></h2>
+<section id="module-promweaver.pctr_prom">
+<span id="promweaver-pctr-prom-module"></span><h2>promweaver.pctr_prom module<a class="headerlink" href="#module-promweaver.pctr_prom" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="promweaver.pctr_prom.PctrPromModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">promweaver.pctr_prom.</span></span><span class="sig-name descname"><span class="pre">PctrPromModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">projection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cen_temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tr_temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cen_pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tr_pressure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_cmass</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vturb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">altitude</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active_atoms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detailed_atoms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detailed_pops</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atomic_models</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nhalf_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ncmass_decades</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nrays</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vlos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vrad</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nthreads</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctx_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">BcType</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">PromBc</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bc_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bc_provider</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/promweaver/pctr_prom.html#PctrPromModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#promweaver.pctr_prom.PctrPromModel" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PromModel</span></code></p>
+<p>Class for prominence with prominence-corona transition region (PCTR)
+simulations. Uses the stratifications first described by Anzer &amp; Heinzel
+(1999), and later adopted by Labrosse et al. in PROM.</p>
+<p>As a function of column mass <span class="math notranslate nohighlight">\(m\)</span>, with maximum value along the line of
+sight <span class="math notranslate nohighlight">\(M\)</span>, the pressure and temperature stratifications in the first
+half of the slab <span class="math notranslate nohighlight">\(m \in [0, M/2]\)</span> are given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}p(m) = 4 * (p_{cen} - p_{tr}) \frac{m}{M} \left(1 - \frac{m}{M}\right) + p_{tr}\\
+T(m) = T_{cen} + (T_{tr} - T_{cen}) * \left(1 - 4 \frac{m}{M} \left(1 - \frac{m}{M}\right)\right)^\gamma\end{split}\]</div>
+<p>This is then reflected in the second half of the slab.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>projection</strong> (<em>str</em>) – Whether the object is to be treated as a “filament” or a “prominence”.</p></li>
+<li><p><strong>cen_temperature</strong> (<em>float</em>) – The central temperature of the prominence [K].</p></li>
+<li><p><strong>tr_temperature</strong> (<em>float</em>) – The transition-region temperature of the prominence [K].</p></li>
+<li><p><strong>cen_pressure</strong> (<em>float</em>) – The central pressure of the prominence [Pa].</p></li>
+<li><p><strong>tr_pressure</strong> (<em>float</em>) – The transition-region pressure of the prominence [Pa].</p></li>
+<li><p><strong>max_cmass</strong> (<em>float</em>) – The maximum column mass of the prominence model [kg/m2].</p></li>
+<li><p><strong>vturb</strong> (<em>float</em>) – The microturbulent velocity inside the prominence [m/s].</p></li>
+<li><p><strong>altitude</strong> (<em>float</em>) – The altitude of the prominence above the solar surface [m].</p></li>
+<li><p><strong>gamma</strong> (<em>float</em>) – The slope of the temperature gradient in the PCTR (must be &gt;=2.0).
+Higher values are steeper.</p></li>
+<li><p><strong>active_atoms</strong> (<em>list</em><em> of </em><em>str</em>) – The element names to make “active” i.e. consider in non-LTE.</p></li>
+<li><p><strong>detailed_atoms</strong> (<em>list</em><em> of </em><em>str</em><em>, </em><em>optional</em>) – The element names to make “detailed static” i.e. consider in detail
+radiatively.  If ‘H’ is set detailed then the model will be run with a
+fixed electron density (set to balance pressure) and iterative charge
+conservation disabled. Provide a compatible <cite>bc_provider</cite> as these will
+not be taken account in the default one computed on the fly.</p></li>
+<li><p><strong>detailed_pops</strong> (<em>dict</em><em>, </em><em>optional</em>) – A mapping from names in <cite>detailed_atoms</cite> to an array of their population
+distribution of shape suitable for the model.</p></li>
+<li><p><strong>atomic_models</strong> (list of <cite>lw.AtomicModels</cite>, optional) – The atomic models to use, a default set will be chosen if none are
+specified.</p></li>
+<li><p><strong>Ncmass_decades</strong> (<em>float</em><em>, </em><em>optional</em>) – The number of column mass decades to span in each half of the slab, i.e.
+the value of <span class="math notranslate nohighlight">\(log10(M/2) - log10(m_0)\)</span>. Default: 6.</p></li>
+<li><p><strong>Nhalf_points</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of points in half of the slab. Default: 100. Total slab size
+will be 2N-1 for symmetry reasons.</p></li>
+<li><p><strong>Nrays</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of Gauss-Legendre angular quadrature rays to use in the
+model. Default: 3. This number will need to be set higher (e.g. 10) if
+using the <cite>ConePromBc</cite>.</p></li>
+<li><p><strong>Nthreads</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of CPU threads to use when solving the radiative transfer
+equations. Default: 1.</p></li>
+<li><p><strong>prd</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to consider the effects of partial frequency redistribution.
+Default: False.</p></li>
+<li><p><strong>vlos</strong> (<em>float</em><em>, </em><em>optional</em>) – The z-projected velocity to apply to the prominence model. Default:
+None, i.e. 0.</p></li>
+<li><p><strong>vrad</strong> (<em>float</em><em>, </em><em>optional</em>) – The Doppler-dimming radial velocity to apply. Note that for filaments
+this is the same as <cite>vlos</cite> and that should be used instead. Not fully
+supported in boundary conditions yet, (i.e. you should interpolate the
+wavelength grid first). Default: None, i.e. 0.</p></li>
+<li><p><strong>ctx_kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) – Extra kwargs to be passed when constructing the Context.</p></li>
+<li><p><strong>BcType</strong> (<em>Constructor for a type</em><em> of </em><em>PromBc</em><em>, </em><em>optional</em>) – The base type to be used for constructing the boundary conditions.
+Default: UniformJPromBc.</p></li>
+<li><p><strong>bc_kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) – Extra kwargs to be passed to the construction of the boundary conditions.</p></li>
+<li><p><strong>bc_provider</strong> (<a class="reference internal" href="#promweaver.bc_provider.PromBcProvider" title="promweaver.bc_provider.PromBcProvider"><em>PromBcProvider</em></a><em>, </em><em>optional</em>) – The provider to use for computing the radiation in the boundary
+conditions. Default: <cite>DynamicContextPromBcProvider</cite> using an
+<cite>lw.Context</cite> configured to match the current model. Note that the
+default is note very performant, but is convenient for experimenting.
+When running a grid of models, consider creating a
+<cite>TabulatedPromBcProvider</cite> using <cite>compute_falc_bc_ctx</cite> and <cite>tabulate_bc</cite>,
+since the default performs quite a few extra RT calculations.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="promweaver.pctr_prom.PctrPromModel.iterate_se">
+<span class="sig-name descname"><span class="pre">iterate_se</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_model_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/promweaver/pctr_prom.html#PctrPromModel.iterate_se"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#promweaver.pctr_prom.PctrPromModel.iterate_se" title="Link to this definition"></a></dt>
+<dd><p>Iterate the context towards statistical equilibrium solution. Slightly
+modified variant of the core <cite>lw.iterate_ctx_se</cite> to add and handle the
+<cite>update_model</cite> callback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Nscatter</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of lambda iterations to perform for an initial estimate of J
+(default: 3).</p></li>
+<li><p><strong>NmaxIter</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum number of iterations (including Nscatter) to take (default:
+2000).</p></li>
+<li><p><strong>prd</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to perform PRD subiterations to estimate rho for PRD lines
+(default: False).</p></li>
+<li><p><strong>JTol</strong> (<em>float</em><em>, </em><em>optional</em>) – The maximum relative change in J from one iteration to the next
+(default: 5e-3).</p></li>
+<li><p><strong>popsTol</strong> (<em>float</em><em>, </em><em>optional</em>) – The maximum relative change in an atomic population from one iteration
+to the next (default: 1e-3).</p></li>
+<li><p><strong>rhoTol</strong> (<em>float</em><em>, </em><em>optional</em>) – The maximum relative change in rho for a PRD line on the final
+subiteration from one iteration to the next. If None, the change in rho
+will not be considered in judging convergence (default: None).</p></li>
+<li><p><strong>prdIterTol</strong> (<em>float</em><em>, </em><em>optional</em>) – The maximum relative change in rho for a PRD line below which PRD
+subiterations will cease for this iteration (default: 1e-2).</p></li>
+<li><p><strong>maxPrdSubIter</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum number of PRD subiterations to make, whether or not rho has
+reached the tolerance of prdIterTol (which isn’t necessary every
+iteration). (Default: 3)</p></li>
+<li><p><strong>printInterval</strong> (<em>float</em><em>, </em><em>optional</em>) – The interval between printing the update size information in seconds. A
+value of 0.0 will print every iteration (default: 0.2).</p></li>
+<li><p><strong>quiet</strong> (<em>bool</em><em>, </em><em>optional</em>) – Overrides any other print arguments and iterates silently if True.
+(Default: False).</p></li>
+<li><p><strong>convergence</strong> (<em>derived ConvergenceCriteria class</em><em>, </em><em>optional</em>) – The ConvergenceCriteria version to be used in determining convergence.
+Will be instantiated by this function, and the <cite>is_converged</cite> method
+will then be used.  (Default: DefaultConvergenceCriteria).</p></li>
+<li><p><strong>returnFinalConvergence</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to return the IterationUpdate objects used in the final
+convergence decision, if True, these will be returned in a list as the
+second return value. (Default: False).</p></li>
+<li><p><strong>update_model</strong> (<em>callable</em><em>(</em><em>PromModel</em><em>, </em><em>bool</em><em>, </em><em>**kwargs</em><em>)</em><em>, </em><em>optional</em>) – A function to use to update model parameters based on iteration
+(e.g. scale populations to maintain pressure), receives the model,
+and whether it should print based on the current iteration progress
+loop.</p></li>
+<li><p><strong>update_model_kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) – Extra kwargs to be passed to <cite>update_model</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>it</strong> (<em>int</em>) – The number of iterations taken.</p></li>
+<li><p><strong>finalIterationUpdates</strong> (<em>List[IterationUpdate], optional</em>) – The final IterationUpdates computed, if requested by <cite>returnFinalConvergence</cite>.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="promweaver-utils-module">
-<h2>promweaver.utils module<a class="headerlink" href="#promweaver-utils-module" title="Link to this heading"></a></h2>
+<section id="module-promweaver.utils">
+<span id="promweaver-utils-module"></span><h2>promweaver.utils module<a class="headerlink" href="#module-promweaver.utils" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="promweaver.utils.default_atomic_models">
+<span class="sig-prename descclassname"><span class="pre">promweaver.utils.</span></span><span class="sig-name descname"><span class="pre">default_atomic_models</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/promweaver/utils.html#default_atomic_models"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#promweaver.utils.default_atomic_models" title="Link to this definition"></a></dt>
+<dd><p>Returns the default set of atomic models to be used, when not otherwise specified.</p>
+</dd></dl>
+
 </section>
 </section>
 
