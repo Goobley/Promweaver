@@ -33,7 +33,7 @@ promweaver.iso\_prom module
     :show-inheritance:
 
 promweaver.stratified\_prom module
----------------------------
+----------------------------------
 
 .. automodule:: promweaver.stratified_prom
     :members:
