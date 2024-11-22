@@ -237,6 +237,7 @@ class PctrPromModel(PromModel):
             starting_z[k] = starting_z[k - 1] + 2.0 * (cmass[k] - cmass[k - 1]) / (
                 rho[k] + rho[k - 1]
             )
+        starting_z = np.ascontiguousarray(starting_z[::-1])
 
         lower_bc = BcType(projection, bc_provider, altitude, "lower", **bc_kwargs)
         if projection == "prominence":
