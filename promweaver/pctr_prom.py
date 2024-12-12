@@ -351,7 +351,7 @@ class PctrPromModel(PromModel):
                 # NOTE(cmo): The only iteration difference from the Iso case
                 rho = self.atmos.nHTot * lw.DefaultAtomicAbundance.massPerH * lw.Amu
                 for k in range(1, rho.shape[0]):
-                    self.atmos.z[k] = self.atmos.z[k - 1] + 2 * (
+                    self.atmos.z[k] = self.atmos.z[k - 1] - 2 * (
                         (self.cmass[k] - self.cmass[k - 1]) / (rho[k] + rho[k - 1])
                     )
                 # to here.
