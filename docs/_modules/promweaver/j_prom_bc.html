@@ -146,9 +146,12 @@
         <span class="n">lower</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bc_type</span> <span class="o">==</span> <span class="s2">&quot;lower&quot;</span>
         <span class="n">multi_I</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">specialised_multi_I</span>
 
-        <span class="k">if</span> <span class="n">final_synth</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">final_synth</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">atmos</span><span class="o">.</span><span class="n">wmu</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">):</span>
             <span class="n">mu_ins</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">mu_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Nmu</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">final_synth</span> <span class="ow">and</span> <span class="n">atmos</span><span class="o">.</span><span class="n">wmu</span><span class="p">[</span><span class="n">mu_idx</span><span class="p">]</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">:</span>
+                    <span class="n">mu_ins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+                    <span class="k">continue</span>
                 <span class="k">if</span> <span class="n">is_prom</span><span class="p">:</span>
                     <span class="n">mu_out</span> <span class="o">=</span> <span class="n">atmos</span><span class="o">.</span><span class="n">mux</span><span class="p">[</span><span class="n">mu_idx</span><span class="p">]</span>
                 <span class="k">else</span><span class="p">:</span>
@@ -172,7 +175,8 @@
                 <span class="n">Iinterp</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">compute_multi_I</span><span class="p">(</span>
                     <span class="n">spect</span><span class="o">.</span><span class="n">wavelength</span><span class="p">,</span> <span class="n">mu_ins</span>
                 <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">final_synth</span><span class="p">:</span>
             <span class="n">J</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">Nwave</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">multi_I</span><span class="p">:</span>
                 <span class="n">mu_ins</span> <span class="o">=</span> <span class="p">[</span><span class="n">outgoing_chromo_ray_mu</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">altitude</span><span class="p">)</span> <span class="k">for</span> <span class="n">mu</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">Jmuz</span><span class="p">]</span>
@@ -184,12 +188,15 @@
                     <span class="n">mu_in</span> <span class="o">=</span> <span class="n">outgoing_chromo_ray_mu</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">altitude</span><span class="p">)</span>
                     <span class="n">J</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">compute_I</span><span class="p">(</span><span class="n">spect</span><span class="o">.</span><span class="n">wavelength</span><span class="p">,</span> <span class="n">mu_in</span><span class="p">)</span> <span class="o">*</span> <span class="n">wmu</span>
 
-            <span class="n">Iinterp</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">J</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span>
             <span class="c1"># NOTE(jmj): 0.5 multiplication to account for flipping in radial</span>
             <span class="c1"># axis i.e., we don&#39;t explicitly consider coronal and so the</span>
             <span class="c1"># chromospheric input would be copy-pasted there</span>
             <span class="k">if</span> <span class="n">is_prom</span><span class="p">:</span>
-                <span class="n">Iinterp</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*=</span> <span class="mf">0.5</span>
+                <span class="n">J</span> <span class="o">*=</span> <span class="mf">0.5</span>
+
+            <span class="k">for</span> <span class="n">mu_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Nmu</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">atmos</span><span class="o">.</span><span class="n">wmu</span><span class="p">[</span><span class="n">mu_idx</span><span class="p">]</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">:</span>
+                    <span class="n">Iinterp</span><span class="p">[:,</span> <span class="n">mu_idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">J</span><span class="p">[:]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">Iinterp</span> <span class="o">=</span> <span class="n">Iinterp</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">muz_computed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">muz</span><span class="p">)</span>

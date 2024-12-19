@@ -265,7 +265,8 @@
 
         <span class="n">mu_ins</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">mu_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Nmu</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">final_synth</span><span class="p">:</span>
+            <span class="c1"># NOTE(cmo): Setup 0 weight mus as if they were final_synth</span>
+            <span class="k">if</span> <span class="n">final_synth</span> <span class="ow">or</span> <span class="n">atmos</span><span class="o">.</span><span class="n">wmu</span><span class="p">[</span><span class="n">mu_idx</span><span class="p">]</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">is_prom</span><span class="p">:</span>
                     <span class="n">mu_out</span> <span class="o">=</span> <span class="n">atmos</span><span class="o">.</span><span class="n">mux</span><span class="p">[</span><span class="n">mu_idx</span><span class="p">]</span>
                 <span class="k">else</span><span class="p">:</span>
@@ -288,16 +289,18 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># NOTE(cmo): This case is about getting correct J, won&#39;t handle negative mux</span>
                 <span class="c1"># NOTE(jmj): Construct cone quadrature around a single quadrature ray from prominence model</span>
-                <span class="n">lower_mu</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="mf">0.0</span>
-                    <span class="k">if</span> <span class="n">mu_idx</span> <span class="o">==</span> <span class="mi">0</span>
-                    <span class="k">else</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">muz</span><span class="p">[</span><span class="n">mu_idx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">muz</span><span class="p">[</span><span class="n">mu_idx</span><span class="p">])</span>
-                <span class="p">)</span>
-                <span class="n">upper_mu</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="mf">1.0</span>
-                    <span class="k">if</span> <span class="n">mu_idx</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">muz</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
-                    <span class="k">else</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">muz</span><span class="p">[</span><span class="n">mu_idx</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">muz</span><span class="p">[</span><span class="n">mu_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
-                <span class="p">)</span>
+                <span class="n">lower_mu</span> <span class="o">=</span> <span class="mf">0.0</span>
+                <span class="c1"># NOTE(cmo): Loop through the mus to avoid ones with 0 weight</span>
+                <span class="k">for</span> <span class="n">lower_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">mu_idx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">atmos</span><span class="o">.</span><span class="n">wmu</span><span class="p">[</span><span class="n">lower_idx</span><span class="p">]</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">:</span>
+                        <span class="n">lower_mu</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">muz</span><span class="p">[</span><span class="n">lower_idx</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">muz</span><span class="p">[</span><span class="n">mu_idx</span><span class="p">])</span>
+                        <span class="k">break</span>
+                <span class="n">upper_mu</span> <span class="o">=</span> <span class="mf">1.0</span>
+                <span class="k">for</span> <span class="n">upper_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">mu_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">Nmu</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">atmos</span><span class="o">.</span><span class="n">wmu</span><span class="p">[</span><span class="n">upper_idx</span><span class="p">]</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">:</span>
+                        <span class="n">upper_mu</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">muz</span><span class="p">[</span><span class="n">mu_idx</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">muz</span><span class="p">[</span><span class="n">upper_idx</span><span class="p">])</span>
+                        <span class="k">break</span>
+
                 <span class="n">cone_half_width</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">upper_mu</span> <span class="o">-</span> <span class="n">lower_mu</span><span class="p">)</span>
                 <span class="n">cone_mid</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">lower_mu</span> <span class="o">+</span> <span class="n">upper_mu</span><span class="p">)</span>
                 <span class="n">cone_zmu</span> <span class="o">=</span> <span class="p">(</span>
