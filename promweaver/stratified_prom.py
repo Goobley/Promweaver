@@ -1,4 +1,4 @@
-from typing import Dict, List, Optional, Type
+from typing import Dict, List, Optional, Tuple, Type, Union
 
 import lightweaver as lw
 import numpy as np
@@ -98,6 +98,21 @@ class StratifiedPromModel(PromModel):
         When running a grid of models, consider creating a
         `TabulatedPromBcProvider` using `compute_falc_bc_ctx` and `tabulate_bc`,
         since the default performs quite a few extra RT calculations.
+    add_vertical_ray : bool, optional
+        Whether to add a non-weighted vertical ray to the model. This doesn't
+        participate in energy balance but allows for directly extracting mu=1,
+        without needing to do a boundary condition. Default: False. Equivalent to
+        `add_extra_mus={"muz": [1.0], "mux": [0.0]}`.
+    add_extra_rays : dict, optional
+        Extra rays to add to the quadrature along which the solution should be
+        sampled. These rays will not have a weight for integration, but can
+        serve as output for different viewing angles. Should be a dict with keys
+        `muz` and `mux` as iterables.
+    temperature_threshold : float, optional
+        Whether to ignore regions of the model above a particular temperature
+        (e.g. 250 kK). This can dramatically speed up models which are primarily
+        coronal, in addition to reducing memory pressure. Default: None, i.e.
+        don't
     """
 
     def __init__(
@@ -126,6 +141,9 @@ class StratifiedPromModel(PromModel):
         BcType: Optional[Type[PromBc]] = None,
         bc_kwargs=None,
         bc_provider=None,
+        add_vertical_ray: bool = False,
+        add_extra_rays: Dict[str, Union[List[float], Tuple[float], np.ndarray]] = None,
+        temperature_threshold: Optional[float] = None,
     ):
         self.projection = projection
 
@@ -157,6 +175,13 @@ class StratifiedPromModel(PromModel):
             raise ValueError(
                 "Cannot conserve pressure without charge conservation enabled."
             )
+
+        if add_vertical_ray and add_extra_rays is not None:
+            raise ValueError(
+                "Cannot provide extra_rays and set extra_rays dict simultaneously."
+            )
+        if add_vertical_ray:
+            add_extra_rays = {"muz": [1.0], "mux": [0.0]}
 
         if ctx_kwargs is None:
             ctx_kwargs = {}
@@ -212,6 +237,26 @@ class StratifiedPromModel(PromModel):
             else:
                 self.ne = N - lw.DefaultAtomicAbundance.totalAbundance * nh_tot
 
+        self.temperature_threshold = temperature_threshold
+        if temperature_threshold is not None:
+            mask = self.temperature > temperature_threshold
+            # NOTE(cmo): Always preserve the endpoints
+            mask[0] = False
+            mask[-1] = False
+
+            # NOTE(cmo): Shrink high temperature "islands" by one on each side to preserve gradients
+            mask[1:] &= mask[:-1]
+            mask[:-1] &= mask[1:]
+            mask = ~mask
+
+            self.z = np.ascontiguousarray(self.z[mask])
+            self.temperature = np.ascontiguousarray(self.temperature[mask])
+            self.ne = np.ascontiguousarray(self.ne[mask])
+            self.nh_tot = np.ascontiguousarray(self.nh_tot[mask])
+            self.vlos = np.ascontiguousarray(self.vlos[mask])
+            self.pressure = np.ascontiguousarray(self.pressure[mask])
+            self.vturb = np.ascontiguousarray(self.vturb[mask])
+
         self.atmos = lw.Atmosphere.make_1d(
             lw.ScaleType.Geometric,
             depthScale=self.z,
@@ -225,6 +270,14 @@ class StratifiedPromModel(PromModel):
         )
 
         self.atmos.quadrature(Nrays)
+        if add_extra_rays is not None:
+            extra_wmu = np.zeros_like(add_extra_rays["muz"])
+            self.atmos.rays(
+                muz=np.concatenate([self.atmos.muz, add_extra_rays["muz"]]),
+                mux=np.concatenate([self.atmos.mux, add_extra_rays["mux"]]),
+                wmu=np.concatenate([self.atmos.wmu, extra_wmu])
+            )
+
         self.rad_set = lw.RadiativeSet(atomic_models)
         self.rad_set.set_active(*active_atoms)
 

@@ -189,7 +189,8 @@ class ConePromBc(PromBc):
 
         mu_ins = []
         for mu_idx in range(Nmu):
-            if final_synth:
+            # NOTE(cmo): Setup 0 weight mus as if they were final_synth
+            if final_synth or atmos.wmu[mu_idx] == 0.0:
                 if is_prom:
                     mu_out = atmos.mux[mu_idx]
                 else:
@@ -212,16 +213,18 @@ class ConePromBc(PromBc):
             else:
                 # NOTE(cmo): This case is about getting correct J, won't handle negative mux
                 # NOTE(jmj): Construct cone quadrature around a single quadrature ray from prominence model
-                lower_mu = (
-                    0.0
-                    if mu_idx == 0
-                    else 0.5 * (self.muz[mu_idx - 1] + self.muz[mu_idx])
-                )
-                upper_mu = (
-                    1.0
-                    if mu_idx == self.muz.shape[0] - 1
-                    else 0.5 * (self.muz[mu_idx] + self.muz[mu_idx + 1])
-                )
+                lower_mu = 0.0
+                # NOTE(cmo): Loop through the mus to avoid ones with 0 weight
+                for lower_idx in range(mu_idx - 1, -1, -1):
+                    if atmos.wmu[lower_idx] != 0.0:
+                        lower_mu = 0.5 * (self.muz[lower_idx] + self.muz[mu_idx])
+                        break
+                upper_mu = 1.0
+                for upper_idx in range(mu_idx + 1, Nmu):
+                    if atmos.wmu[upper_idx] != 0.0:
+                        upper_mu = 0.5 * (self.muz[mu_idx] + self.muz[upper_idx])
+                        break
+
                 cone_half_width = 0.5 * (upper_mu - lower_mu)
                 cone_mid = 0.5 * (lower_mu + upper_mu)
                 cone_zmu = (

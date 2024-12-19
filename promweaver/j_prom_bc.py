@@ -73,9 +73,12 @@ class UniformJPromBc(PromBc):
         lower = self.bc_type == "lower"
         multi_I = self.provider.specialised_multi_I
 
-        if final_synth:
+        if final_synth or np.any(atmos.wmu == 0.0):
             mu_ins = []
             for mu_idx in range(Nmu):
+                if not final_synth and atmos.wmu[mu_idx] != 0.0:
+                    mu_ins.append(None)
+                    continue
                 if is_prom:
                     mu_out = atmos.mux[mu_idx]
                 else:
@@ -99,7 +102,8 @@ class UniformJPromBc(PromBc):
                 Iinterp[:, :, 0] = self.provider.compute_multi_I(
                     spect.wavelength, mu_ins
                 )
-        else:
+
+        if not final_synth:
             J = np.zeros(Nwave)
             if multi_I:
                 mu_ins = [outgoing_chromo_ray_mu(mu, self.altitude) for mu in self.Jmuz]
@@ -111,12 +115,15 @@ class UniformJPromBc(PromBc):
                     mu_in = outgoing_chromo_ray_mu(mu, self.altitude)
                     J += self.provider.compute_I(spect.wavelength, mu_in) * wmu
 
-            Iinterp[:, :, 0] = J[:, None]
             # NOTE(jmj): 0.5 multiplication to account for flipping in radial
             # axis i.e., we don't explicitly consider coronal and so the
             # chromospheric input would be copy-pasted there
             if is_prom:
-                Iinterp[:, :, 0] *= 0.5
+                J *= 0.5
+
+            for mu_idx in range(Nmu):
+                if atmos.wmu[mu_idx] != 0.0:
+                    Iinterp[:, mu_idx, 0] = J[:]
 
         self.Iinterp = Iinterp
         self.muz_computed = np.copy(self.muz)
