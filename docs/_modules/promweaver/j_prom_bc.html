@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>promweaver.j_prom_bc &mdash; Promweaver  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
@@ -69,19 +69,19 @@
            <div itemprop="articleBody">
              
   <h1>Source code for promweaver.j_prom_bc</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">numpy.polynomial.legendre</span> <span class="kn">import</span> <span class="n">leggauss</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.polynomial.legendre</span><span class="w"> </span><span class="kn">import</span> <span class="n">leggauss</span>
 
-<span class="kn">from</span> <span class="nn">.bc_provider</span> <span class="kn">import</span> <span class="n">PromBcProvider</span>
-<span class="kn">from</span> <span class="nn">.limb_darkening</span> <span class="kn">import</span> <span class="n">outgoing_chromo_ray_mu</span>
-<span class="kn">from</span> <span class="nn">.prom_bc</span> <span class="kn">import</span> <span class="n">PromBc</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.bc_provider</span><span class="w"> </span><span class="kn">import</span> <span class="n">PromBcProvider</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.limb_darkening</span><span class="w"> </span><span class="kn">import</span> <span class="n">outgoing_chromo_ray_mu</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.prom_bc</span><span class="w"> </span><span class="kn">import</span> <span class="n">PromBc</span>
 
 
 <div class="viewcode-block" id="UniformJPromBc">
 <a class="viewcode-back" href="../../promweaver-api.html#promweaver.j_prom_bc.UniformJPromBc">[docs]</a>
-<span class="k">class</span> <span class="nc">UniformJPromBc</span><span class="p">(</span><span class="n">PromBc</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">UniformJPromBc</span><span class="p">(</span><span class="n">PromBc</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Simple boundary condition that supplies :math:`J_\nu` at each incoming ray</span>
 <span class="sd">    and frequency for the boundary condition. This value is uniform over each</span>
@@ -106,7 +106,7 @@
 <span class="sd">        The number of Gauss-Legendre rays to be used to compute J. Default: 50.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">projection</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">bc_provider</span><span class="p">:</span> <span class="n">PromBcProvider</span><span class="p">,</span>
@@ -134,7 +134,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">final_synthesis</span> <span class="o">=</span> <span class="kc">False</span>
 
-    <span class="k">def</span> <span class="nf">update_bc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atmos</span><span class="p">,</span> <span class="n">spect</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_bc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atmos</span><span class="p">,</span> <span class="n">spect</span><span class="p">):</span>
         <span class="n">Nmu</span> <span class="o">=</span> <span class="n">atmos</span><span class="o">.</span><span class="n">muz</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">Nwave</span> <span class="o">=</span> <span class="n">spect</span><span class="o">.</span><span class="n">wavelength</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
@@ -204,7 +204,7 @@
 
 <div class="viewcode-block" id="UniformJPromBc.compute_bc">
 <a class="viewcode-back" href="../../promweaver-api.html#promweaver.j_prom_bc.UniformJPromBc.compute_bc">[docs]</a>
-    <span class="k">def</span> <span class="nf">compute_bc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atmos</span><span class="p">,</span> <span class="n">spect</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_bc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atmos</span><span class="p">,</span> <span class="n">spect</span><span class="p">):</span>
         <span class="n">any_param_change</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_synthesis</span> <span class="o">!=</span> <span class="n">atmos</span><span class="o">.</span><span class="n">final_synthesis</span><span class="p">:</span>

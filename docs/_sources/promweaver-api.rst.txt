@@ -25,6 +25,13 @@ promweaver.cone\_prom\_bc module
     :members:
     :show-inheritance:
 
+promweaver.prom\_compatible\_bc module
+--------------------------------
+
+.. automodule:: promweaver.prom_compatible_bc
+    :members:
+    :show-inheritance:
+
 promweaver.iso\_prom module
 ---------------------------
 
