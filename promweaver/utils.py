@@ -7,7 +7,7 @@ def default_atomic_models():
         C_atom,
         CaII_atom,
         Fe_atom,
-        H_6_atom,
+        H_atom,
         He_9_atom,
         MgII_atom,
         N_atom,
@@ -18,7 +18,7 @@ def default_atomic_models():
     )
 
     atomic_models = [
-        H_6_atom(),
+        H_atom(),
         C_atom(),
         O_atom(),
         Si_atom(),
