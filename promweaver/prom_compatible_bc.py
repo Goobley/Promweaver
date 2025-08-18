@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Generator, List, Optional, Tuple
+from typing import Iterator, List, Optional, Tuple
 
 import astropy.units as u
 import lightweaver as lw
@@ -9,7 +9,7 @@ from lightweaver.atomic_model import AtomicModel
 from lightweaver.rh_atoms import H_atom
 from numpy.polynomial import Polynomial
 
-def consume_txt_file(path) -> Generator[str]:
+def consume_txt_file(path) -> Iterator[str]:
     """
     Yields a file line-by-line. The lines are stripped and empty lines are
     skipped.
