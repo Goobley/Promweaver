@@ -77,7 +77,27 @@
 <li class="toctree-l3"><a class="reference internal" href="#promweaver.cone_prom_bc.ConeRadParams"><code class="docutils literal notranslate"><span class="pre">ConeRadParams</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#promweaver-prom-compatible-bc-module">promweaver.prom_compatible_bc module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#promweaver-prom-compatible-bc-module">promweaver.prom_compatible_bc module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#promweaver.prom_compatible_bc.BrightnessTemperatures"><code class="docutils literal notranslate"><span class="pre">BrightnessTemperatures</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#promweaver.prom_compatible_bc.BrightnessTemperatures.temperature"><code class="docutils literal notranslate"><span class="pre">BrightnessTemperatures.temperature</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#promweaver.prom_compatible_bc.BrightnessTemperatures.wavelength"><code class="docutils literal notranslate"><span class="pre">BrightnessTemperatures.wavelength</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#promweaver.prom_compatible_bc.LineIncidentIntensityData"><code class="docutils literal notranslate"><span class="pre">LineIncidentIntensityData</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#promweaver.prom_compatible_bc.LineIncidentIntensityData.delta_lambda"><code class="docutils literal notranslate"><span class="pre">LineIncidentIntensityData.delta_lambda</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#promweaver.prom_compatible_bc.LineIncidentIntensityData.i"><code class="docutils literal notranslate"><span class="pre">LineIncidentIntensityData.i</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#promweaver.prom_compatible_bc.LineIncidentIntensityData.intensity"><code class="docutils literal notranslate"><span class="pre">LineIncidentIntensityData.intensity</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#promweaver.prom_compatible_bc.LineIncidentIntensityData.j"><code class="docutils literal notranslate"><span class="pre">LineIncidentIntensityData.j</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#promweaver.prom_compatible_bc.LineIncidentIntensityData.limb_darkening"><code class="docutils literal notranslate"><span class="pre">LineIncidentIntensityData.limb_darkening</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#promweaver.prom_compatible_bc.consume_txt_file"><code class="docutils literal notranslate"><span class="pre">consume_txt_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#promweaver.prom_compatible_bc.line_index_to_ij"><code class="docutils literal notranslate"><span class="pre">line_index_to_ij()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#promweaver.prom_compatible_bc.parse_intinc"><code class="docutils literal notranslate"><span class="pre">parse_intinc()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#promweaver.prom_compatible_bc.parse_tembri"><code class="docutils literal notranslate"><span class="pre">parse_tembri()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#promweaver.prom_compatible_bc.tabulate_intinc_boundary"><code class="docutils literal notranslate"><span class="pre">tabulate_intinc_boundary()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#module-promweaver.iso_prom">promweaver.iso_prom module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#promweaver.iso_prom.IsoPromModel"><code class="docutils literal notranslate"><span class="pre">IsoPromModel</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#promweaver.iso_prom.IsoPromModel.iterate_se"><code class="docutils literal notranslate"><span class="pre">IsoPromModel.iterate_se()</span></code></a></li>
@@ -388,6 +408,155 @@ Nx] fashion. (dtype: &lt;f8)</p>
 </section>
 <section id="promweaver-prom-compatible-bc-module">
 <h2>promweaver.prom_compatible_bc module<a class="headerlink" href="#promweaver-prom-compatible-bc-module" title="Link to this heading"></a></h2>
+<dl class="py class" id="module-promweaver.prom_compatible_bc">
+<dt class="sig sig-object py" id="promweaver.prom_compatible_bc.BrightnessTemperatures">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">promweaver.prom_compatible_bc.</span></span><span class="sig-name descname"><span class="pre">BrightnessTemperatures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wavelength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/promweaver/prom_compatible_bc.html#BrightnessTemperatures"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#promweaver.prom_compatible_bc.BrightnessTemperatures" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Storage for the result of the <cite>tembri.dat</cite> file.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="promweaver.prom_compatible_bc.BrightnessTemperatures.temperature">
+<span class="sig-name descname"><span class="pre">temperature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#promweaver.prom_compatible_bc.BrightnessTemperatures.temperature" title="Link to this definition"></a></dt>
+<dd><p>K</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="promweaver.prom_compatible_bc.BrightnessTemperatures.wavelength">
+<span class="sig-name descname"><span class="pre">wavelength</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#promweaver.prom_compatible_bc.BrightnessTemperatures.wavelength" title="Link to this definition"></a></dt>
+<dd><p>nm</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="promweaver.prom_compatible_bc.LineIncidentIntensityData">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">promweaver.prom_compatible_bc.</span></span><span class="sig-name descname"><span class="pre">LineIncidentIntensityData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limb_darkening</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Polynomial</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_lambda</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intensity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/promweaver/prom_compatible_bc.html#LineIncidentIntensityData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#promweaver.prom_compatible_bc.LineIncidentIntensityData" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Stores the result of loading a line “intinc.dat”. By default, this will contain a half-profile.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="promweaver.prom_compatible_bc.LineIncidentIntensityData.delta_lambda">
+<span class="sig-name descname"><span class="pre">delta_lambda</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#promweaver.prom_compatible_bc.LineIncidentIntensityData.delta_lambda" title="Link to this definition"></a></dt>
+<dd><p>Wavelengths of the intensity samples [nm]</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="promweaver.prom_compatible_bc.LineIncidentIntensityData.i">
+<span class="sig-name descname"><span class="pre">i</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#promweaver.prom_compatible_bc.LineIncidentIntensityData.i" title="Link to this definition"></a></dt>
+<dd><p>Lower transition index</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="promweaver.prom_compatible_bc.LineIncidentIntensityData.intensity">
+<span class="sig-name descname"><span class="pre">intensity</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#promweaver.prom_compatible_bc.LineIncidentIntensityData.intensity" title="Link to this definition"></a></dt>
+<dd><p>Intensity samples [W/m2/Hz/sr]</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="promweaver.prom_compatible_bc.LineIncidentIntensityData.j">
+<span class="sig-name descname"><span class="pre">j</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#promweaver.prom_compatible_bc.LineIncidentIntensityData.j" title="Link to this definition"></a></dt>
+<dd><p>Upper transition index</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="promweaver.prom_compatible_bc.LineIncidentIntensityData.limb_darkening">
+<span class="sig-name descname"><span class="pre">limb_darkening</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Polynomial</span></em><a class="headerlink" href="#promweaver.prom_compatible_bc.LineIncidentIntensityData.limb_darkening" title="Link to this definition"></a></dt>
+<dd><p>Polynomial for limb darkening as a function of mu. Ignore if <cite>limb_darkening.coef[0] == 0.0</cite>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="promweaver.prom_compatible_bc.consume_txt_file">
+<span class="sig-prename descclassname"><span class="pre">promweaver.prom_compatible_bc.</span></span><span class="sig-name descname"><span class="pre">consume_txt_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/promweaver/prom_compatible_bc.html#consume_txt_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#promweaver.prom_compatible_bc.consume_txt_file" title="Link to this definition"></a></dt>
+<dd><p>Yields a file line-by-line. The lines are stripped and empty lines are
+skipped.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="promweaver.prom_compatible_bc.line_index_to_ij">
+<span class="sig-prename descclassname"><span class="pre">promweaver.prom_compatible_bc.</span></span><span class="sig-name descname"><span class="pre">line_index_to_ij</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/promweaver/prom_compatible_bc.html#line_index_to_ij"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#promweaver.prom_compatible_bc.line_index_to_ij" title="Link to this definition"></a></dt>
+<dd><p>Converts from “column major” single line index to i, j. Assumes 0 based
+indexing. Raises ValueError if line index not found.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="promweaver.prom_compatible_bc.parse_intinc">
+<span class="sig-prename descclassname"><span class="pre">promweaver.prom_compatible_bc.</span></span><span class="sig-name descname"><span class="pre">parse_intinc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#promweaver.prom_compatible_bc.LineIncidentIntensityData" title="promweaver.prom_compatible_bc.LineIncidentIntensityData"><span class="pre">LineIncidentIntensityData</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/promweaver/prom_compatible_bc.html#parse_intinc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#promweaver.prom_compatible_bc.parse_intinc" title="Link to this definition"></a></dt>
+<dd><p>Load an <cite>intinc.dat</cite> file in the form used by MALI (P. Heinzel) and CYMA2DV
+(P. Gouttebroze), returning a list of the lines described therein.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em><em>, </em><em>optional</em>) – The location to load the intinc.dat. If not provided <cite>“intinc.dat”</cite> will be tried.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>line_data</strong> – A list of all the lines and their associated incident intensities loaded from the file.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of <a class="reference internal" href="#promweaver.prom_compatible_bc.LineIncidentIntensityData" title="promweaver.prom_compatible_bc.LineIncidentIntensityData">LineIncidentIntensityData</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="promweaver.prom_compatible_bc.parse_tembri">
+<span class="sig-prename descclassname"><span class="pre">promweaver.prom_compatible_bc.</span></span><span class="sig-name descname"><span class="pre">parse_tembri</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/promweaver/prom_compatible_bc.html#parse_tembri"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#promweaver.prom_compatible_bc.parse_tembri" title="Link to this definition"></a></dt>
+<dd><p>Load a <cite>tembri.dat</cite> file in the form used by MALI (P. Heinzel) and CYMA2DV
+(P. Gouttebroze), returning a wavelength varying set of brightness
+temperatures for the continuum.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em><em>, </em><em>optional</em>) – The location to load the tembri.dat. If not provided <cite>“tembri.dat”</cite> will be tried.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>tembri</strong> – Wavelength-varying brightness temperatures for continuum emission.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#promweaver.prom_compatible_bc.BrightnessTemperatures" title="promweaver.prom_compatible_bc.BrightnessTemperatures">BrightnessTemperatures</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="promweaver.prom_compatible_bc.tabulate_intinc_boundary">
+<span class="sig-prename descclassname"><span class="pre">promweaver.prom_compatible_bc.</span></span><span class="sig-name descname"><span class="pre">tabulate_intinc_boundary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wavelength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">H_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AtomicModel</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu_grid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intinc_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tembri_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/promweaver/prom_compatible_bc.html#tabulate_intinc_boundary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#promweaver.prom_compatible_bc.tabulate_intinc_boundary" title="Link to this definition"></a></dt>
+<dd><p>Provide input for <cite>TabulatedPromBcProvider</cite> using data in the form consumed
+by MALI (P. Heinzel), and CYMA2DV (P. Gouttebroze). Currently only
+compatible with H.</p>
+<p>N.B. Due to licensing, the necessary data files can’t be distributed with
+Promweaver. The data files are distributed here under GPLv3:
+&lt;<a class="reference external" href="https://idoc.osups.universite-paris-saclay.fr/medoc/tools/radiative-transfer-codes/cyma2dv/">https://idoc.osups.universite-paris-saclay.fr/medoc/tools/radiative-transfer-codes/cyma2dv/</a>&gt;
+(doi: 10.48326/idoc.medoc.radtransfer.cyma2dv). The download does not
+currently produce a usable archive (there is a null byte prepended to the
+file), but this can be fixed:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tail</span> <span class="o">-</span><span class="n">c</span> <span class="o">+</span><span class="mi">2</span> <span class="n">CYMA2DV_Licence_GPL</span><span class="o">.</span><span class="n">tgz</span> <span class="o">&gt;</span> <span class="n">cyma2dv_fixed</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">tar</span> <span class="n">xvzf</span> <span class="n">cyma2dv_fixed</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+</pre></div>
+</div>
+<p>gzip will complain about an unexpected end to the file, but it will have
+successfully extracted the data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>wavelength</strong> (<em>array-like</em>) – The wavelength grid to use for the boundary condition table</p></li>
+<li><p><strong>H_model</strong> (<em>AtomicModel</em><em>, </em><em>optional</em>) – The model H atom to use. If not provided, the 9-level lightweaver
+<cite>H_atom</cite> is used. It is important that this match the model employed in
+your simulation or the irradiation could be slightly shifted in
+wavelength, causing Doppler dimming and brightening effects.</p></li>
+<li><p><strong>mu_grid</strong> (<em>array-like</em><em>, </em><em>optional</em>) – The grid of viewing angles (in the form of mu) to be used for the
+boundary condition table. Default: <cite>np.linspace(0.01, 1.0, 100)</cite>.</p></li>
+<li><p><strong>intinc_path</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to <cite>intinc.dat</cite>. Default “intinc.dat”.</p></li>
+<li><p><strong>tembri_path</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to <cite>tembri.dat</cite>. Default “tembri.dat”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>data</strong> – Dict with keys ‘wavelength’, ‘mu_grid’ and ‘I’ that can be splatted
+directly into a <cite>TabulatedPromBcProvider</cite> or pickled.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 <section id="module-promweaver.iso_prom">
 <span id="promweaver-iso-prom-module"></span><h2>promweaver.iso_prom module<a class="headerlink" href="#module-promweaver.iso_prom" title="Link to this heading"></a></h2>
