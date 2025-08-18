@@ -1,5 +1,6 @@
 from typing import Dict, List, Optional, Tuple, Type, Union
 
+import astropy.units as u
 import lightweaver as lw
 import lightweaver.wittmann as witt
 import numpy as np
@@ -246,9 +247,9 @@ class PctrPromModel(PromModel):
                 witt.BK * self.temperature[k]
             )
 
-        rho /= lw.CM_TO_M**3 / lw.G_TO_KG
+        rho = (rho << u.Unit("g / cm3")).to("kg / m3").value
         nHTot = rho / (lw.Amu * lw.DefaultAtomicAbundance.massPerH)
-        ne /= lw.CM_TO_M**3
+        ne = (ne << u.Unit("cm-3")).to("m-3").value
         # NOTE(cmo): CGS Ends Here
 
         starting_z = np.zeros_like(cmass)
