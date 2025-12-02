@@ -184,7 +184,7 @@ class PromModel:
 
             terminate = conv.is_converged(JUpdate, popsUpdate, dRhoUpdate)
 
-            if terminate:
+            if it > Nscatter + 1 and terminate:
                 if not quiet:
                     endTime = time.time()
                     duration = endTime - startTime
