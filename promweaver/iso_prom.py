@@ -90,6 +90,8 @@ class IsoPromModel(PromModel):
         sampled. These rays will not have a weight for integration, but can
         serve as output for different viewing angles. Should be a dict with keys
         `muz` and `mux` as iterables.
+    extra_wavelengths: array, optional
+        Wavelengths to add to the context for the formal solution.
     """
 
     def __init__(
@@ -116,6 +118,7 @@ class IsoPromModel(PromModel):
         bc_provider=None,
         add_vertical_ray: bool = False,
         add_extra_rays: Dict[str, Union[List[float], Tuple[float], np.ndarray]] = None,
+        extra_wavelengths: Optional[np.ndarray] = None,
     ):
         self.projection = projection
         if projection not in ["prominence", "filament"]:
@@ -135,6 +138,7 @@ class IsoPromModel(PromModel):
         self.vrad = vrad
         # NOTE(cmo): Whether to do pressure/n_e updates, only disabled for detailed H
         self.do_pressure_updates = True
+        self.extra_wavelengths = extra_wavelengths
 
         if projection == "filament" and vrad is not None and vlos is not None:
             raise ValueError(
@@ -263,7 +267,7 @@ class IsoPromModel(PromModel):
         else:
             self.eq_pops = self.rad_set.iterate_lte_ne_eq_pops(self.atmos)
 
-        self.spect = self.rad_set.compute_wavelength_grid()
+        self.spect = self.rad_set.compute_wavelength_grid(extraWavelengths=extra_wavelengths)
         self.Nthreads = Nthreads
         hprd = self.prd and self.vlos is not None
         if hprd and hprd not in ctx_kwargs:

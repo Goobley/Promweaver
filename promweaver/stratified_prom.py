@@ -113,6 +113,8 @@ class StratifiedPromModel(PromModel):
         (e.g. 250 kK). This can dramatically speed up models which are primarily
         coronal, in addition to reducing memory pressure. Default: None, i.e.
         don't
+    extra_wavelengths: array, optional
+        Wavelengths to add to the context for the formal solution.
     """
 
     def __init__(
@@ -144,6 +146,7 @@ class StratifiedPromModel(PromModel):
         add_vertical_ray: bool = False,
         add_extra_rays: Dict[str, Union[List[float], Tuple[float], np.ndarray]] = None,
         temperature_threshold: Optional[float] = None,
+        extra_wavelengths: Optional[np.ndarray] = None,
     ):
         self.projection = projection
 
@@ -165,6 +168,7 @@ class StratifiedPromModel(PromModel):
         self.vrad = vrad
         self.conserve_charge = conserve_charge
         self.conserve_pressure = conserve_pressure
+        self.extra_wavelengths = extra_wavelengths
 
         if projection == "filament" and vrad is not None and vlos is not None:
             raise ValueError(
@@ -319,7 +323,7 @@ class StratifiedPromModel(PromModel):
         else:
             self.eq_pops = self.rad_set.compute_eq_pops(self.atmos)
 
-        self.spect = self.rad_set.compute_wavelength_grid()
+        self.spect = self.rad_set.compute_wavelength_grid(extraWavelengths=extra_wavelengths)
         self.Nthreads = Nthreads
         hprd = self.prd and self.vlos is not None
 
