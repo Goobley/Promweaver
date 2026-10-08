@@ -4,7 +4,7 @@
 **MIT License**
 
 A simple package demonstrating possible techniques for building on top of [_Lightweaver_](https://github.com/Goobley/Lightweaver), but also helping to bridge the gap between chromospheric NLTE Radiative Transfer codes and those designed for isolated irradiated structures, such as prominences and filaments.
-The two main models: `IsoPromModel` and `PctrPromModel` are built on the ideas presented in the PROM codes [citation needed].
+Two of the main models: `IsoPromModel` and `PctrPromModel` are built on the ideas presented in the PROM code, but supporting the modern "Cone" boundary conditions described in Jenkins, Osborne & Keppens (2023). `StratifiedPromModel` provides the infrastructure to do the column-by-column (1.5D) modelling described therein.
 
 ### Documentation
 
