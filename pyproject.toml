@@ -1,6 +1,37 @@
 [build-system]
-requires = ['setuptools>=42', 'wheel', 'setuptools_scm[toml]>=3.4']
+requires = ['setuptools>=77', 'wheel', 'setuptools_scm[toml]>=3.4']
 build-backend = 'setuptools.build_meta'
 
 [tool.setuptools_scm]
 write_to = 'promweaver/version.py'
+
+[project]
+name = "promweaver"
+dynamic = ["version"]
+requires-python = ">=3.10"
+dependencies = ["lightweaver>=1.0.0rc4"]
+authors = [
+    {name = "Chris Osborne", email = "lw@contextuallight.com"}
+]
+description = "Prominence/Filament Radiative Transfer Modelling with Lightweaver"
+readme = "README.md"
+license = "MIT"
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Astronomy",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+
+[project.urls]
+Homepage = "https://github.com/Goobley/Promweaver"
+Documentation = "https://goobley.github.io/Promweaver"
+Source = "https://github.com/Goobley/Promweaver"
+
+[tool.setuptools]
+packages = ["promweaver"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# Promweaver itself must never use Lightweaver's deprecated names.
+filterwarnings = ["error::lightweaver.deprecation.LightweaverDeprecationWarning"]

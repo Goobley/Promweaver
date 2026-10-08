@@ -2,6 +2,7 @@ from typing import Dict, List, Optional, Tuple, Type, Union
 
 import astropy.units as u
 import lightweaver as lw
+from lightweaver.deprecation import remap_old_keys
 import lightweaver.wittmann as witt
 import numpy as np
 
@@ -195,9 +196,9 @@ class IsoPromModel(PromModel):
             ne[k] = eos.pe_from_pg(temperature, self.pressure_cgs) / (
                 witt.BK * temperature
             )
-        nHTot = (
+        nh_tot = (
             (rho << u.Unit("g / cm3")).to("kg / m3").value
-            / (lw.Amu * lw.DefaultAtomicAbundance.massPerH)
+            / (lw.Amu * lw.DefaultAtomicAbundance.mass_per_h)
         )
         ne = (ne << u.Unit("cm-3")).to("m-3").value
         # NOTE(cmo): CGS Ends Here
@@ -213,14 +214,14 @@ class IsoPromModel(PromModel):
         vel = np.zeros_like(z) if vlos is None else np.ones_like(z) * vlos
         self.atmos = lw.Atmosphere.make_1d(
             lw.ScaleType.Geometric,
-            depthScale=z,
+            depth_scale=z,
             temperature=temp,
             vlos=vel,
             vturb=np.ones_like(z) * vturb,
             ne=ne,
-            nHTot=nHTot,
-            lowerBc=lower_bc,
-            upperBc=upper_bc,
+            nh_tot=nh_tot,
+            lower_bc=lower_bc,
+            upper_bc=upper_bc,
         )
         self.atmos.quadrature(Nrays)
         if add_extra_rays is not None:
@@ -245,16 +246,16 @@ class IsoPromModel(PromModel):
 
             # NOTE(cmo): Set ne now to correctly match pressure if "H" pops are provided
             if "H" in detailed_pops:
-                new_nHTot = np.sum(detailed_pops["H"], axis=0)
+                new_nh_tot = np.sum(detailed_pops["H"], axis=0)
             else:
                 self.eq_pops = self.rad_set.iterate_lte_ne_eq_pops(self.atmos)
-                new_nHTot = np.sum(self.eq_pops["H"], axis=0)
+                new_nh_tot = np.sum(self.eq_pops["H"], axis=0)
 
             new_ne = (
                 self.pressure / (lw.KBoltzmann * self.temperature)
-                - lw.DefaultAtomicAbundance.totalAbundance * new_nHTot
+                - lw.DefaultAtomicAbundance.total_abundance * new_nh_tot
             )
-            self.atmos.nHTot[:] = new_nHTot
+            self.atmos.nh_tot[:] = new_nh_tot
             self.atmos.ne[:] = new_ne
 
             if "H" in detailed_pops:
@@ -267,7 +268,7 @@ class IsoPromModel(PromModel):
         else:
             self.eq_pops = self.rad_set.iterate_lte_ne_eq_pops(self.atmos)
 
-        self.spect = self.rad_set.compute_wavelength_grid(extraWavelengths=extra_wavelengths)
+        self.spect = self.rad_set.compute_wavelength_grid(extra_wavelengths=extra_wavelengths)
         self.Nthreads = Nthreads
         hprd = self.prd and self.vlos is not None
         if hprd and hprd not in ctx_kwargs:
@@ -277,12 +278,16 @@ class IsoPromModel(PromModel):
             self.spect,
             self.eq_pops,
             Nthreads=Nthreads,
-            conserveCharge=self.do_pressure_updates,
+            conserve_charge=self.do_pressure_updates,
             **ctx_kwargs,
         )
         super().__init__(ctx)
 
     def iterate_se(self, *args, update_model_kwargs: Optional[dict] = None, **kwargs):
+        # NOTE(cmo): Remap the pre-1.0 kwargs here so the warning points at the caller.
+        kwargs = remap_old_keys(
+            kwargs, stacklevel=2, renames=PromModel.iterate_se.__lw_renamed_kwargs__
+        )
         if update_model_kwargs is None:
             update_model_kwargs = {}
 
@@ -292,33 +297,33 @@ class IsoPromModel(PromModel):
         update_model = None
         if self.do_pressure_updates:
 
-            def update_model(self, printNow, **kwargs):
+            def update_model(self, print_now, **kwargs):
                 # NOTE(cmo): Fix pressure throughout the atmosphere.
                 N = (
-                    lw.DefaultAtomicAbundance.totalAbundance * self.atmos.nHTot
+                    lw.DefaultAtomicAbundance.total_abundance * self.atmos.nh_tot
                     + self.atmos.ne
                 )
                 NError = self.pressure / (lw.KBoltzmann * self.temperature) - N
-                nHTotCorrection = NError / (
-                    lw.DefaultAtomicAbundance.totalAbundance
-                    + self.eq_pops["H"][-1] / self.atmos.nHTot
+                nh_tot_correction = NError / (
+                    lw.DefaultAtomicAbundance.total_abundance
+                    + self.eq_pops["H"][-1] / self.atmos.nh_tot
                 )
-                if printNow:
+                if print_now:
                     print(
-                        f"    nHTotError: {np.max(np.abs(nHTotCorrection / self.atmos.nHTot)):6.4e}"
+                        f"    nh_tot error: {np.max(np.abs(nh_tot_correction / self.atmos.nh_tot)):6.4e}"
                     )
                 self.atmos.ne[:] += (
-                    nHTotCorrection * self.eq_pops["H"][-1] / self.atmos.nHTot
+                    nh_tot_correction * self.eq_pops["H"][-1] / self.atmos.nh_tot
                 )
-                prevnHTot = np.copy(self.atmos.nHTot)
-                self.atmos.nHTot[:] += nHTotCorrection
-                if np.any(self.atmos.nHTot < 0.0):
-                    raise lw.ConvergenceError("nHTot driven negative!")
-                nHTotRatio = self.atmos.nHTot / prevnHTot
+                prev_nh_tot = np.copy(self.atmos.nh_tot)
+                self.atmos.nh_tot[:] += nh_tot_correction
+                if np.any(self.atmos.nh_tot < 0.0):
+                    raise lw.ConvergenceError("nh_tot driven negative!")
+                nh_tot_ratio = self.atmos.nh_tot / prev_nh_tot
 
-                for atom in self.rad_set.activeAtoms:
+                for atom in self.rad_set.active_atoms:
                     p = self.eq_pops[atom.element]
-                    p[...] *= nHTotRatio[None, :]
+                    p[...] *= nh_tot_ratio[None, :]
 
                 # TODO(cmo): Add condition to not always re-evaluate the line profiles. Maybe on ne change?
                 self.ctx.update_deps(vlos=False, background=False)

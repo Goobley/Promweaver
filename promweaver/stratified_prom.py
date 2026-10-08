@@ -1,6 +1,7 @@
 from typing import Dict, List, Optional, Tuple, Type, Union
 
 import lightweaver as lw
+from lightweaver.deprecation import remap_old_keys
 import numpy as np
 
 from .bc_provider import DynamicContextPromBcProvider
@@ -227,19 +228,19 @@ class StratifiedPromModel(PromModel):
 
         if pressure is None:
             self.pressure = (
-                (lw.DefaultAtomicAbundance.totalAbundance * nh_tot + ne)
+                (lw.DefaultAtomicAbundance.total_abundance * nh_tot + ne)
                 * lw.KBoltzmann
                 * temperature
             )
         else:
             N = pressure / (lw.KBoltzmann * temperature)
             if self.nh_tot is None and self.ne is None:
-                self.nh_tot = N / (initial_ionisation_fraction + lw.DefaultAtomicAbundance.totalAbundance)
+                self.nh_tot = N / (initial_ionisation_fraction + lw.DefaultAtomicAbundance.total_abundance)
                 self.ne = initial_ionisation_fraction * self.nh_tot
             elif self.nh_tot is None:
-                self.nh_tot = 1.0 / lw.DefaultAtomicAbundance.totalAbundance * (N - ne)
+                self.nh_tot = 1.0 / lw.DefaultAtomicAbundance.total_abundance * (N - ne)
             else:
-                self.ne = N - lw.DefaultAtomicAbundance.totalAbundance * nh_tot
+                self.ne = N - lw.DefaultAtomicAbundance.total_abundance * nh_tot
 
         self.temperature_threshold = temperature_threshold
         if temperature_threshold is not None:
@@ -263,14 +264,14 @@ class StratifiedPromModel(PromModel):
 
         self.atmos = lw.Atmosphere.make_1d(
             lw.ScaleType.Geometric,
-            depthScale=self.z,
+            depth_scale=self.z,
             temperature=self.temperature,
             vlos=self.vlos,
             vturb=self.vturb,
             ne=self.ne,
-            nHTot=self.nh_tot,
-            lowerBc=lower_bc,
-            upperBc=upper_bc,
+            nh_tot=self.nh_tot,
+            lower_bc=lower_bc,
+            upper_bc=upper_bc,
         )
 
         self.atmos.quadrature(Nrays)
@@ -299,18 +300,18 @@ class StratifiedPromModel(PromModel):
             # NOTE(cmo): Set ne now to correctly match pressure if "H" pops are provided
 
             if "H" in detailed_pops:
-                new_nHTot = np.sum(detailed_pops["H"], axis=0)
+                new_nh_tot = np.sum(detailed_pops["H"], axis=0)
             else:
                 self.eq_pops = self.rad_set.iterate_lte_ne_eq_pops(self.atmos)
-                new_nHTot = np.sum(self.eq_pops["H"], axis=0)
+                new_nh_tot = np.sum(self.eq_pops["H"], axis=0)
 
             new_ne = (
                 self.pressure / (lw.KBoltzmann * self.temperature)
-                - lw.DefaultAtomicAbundance.totalAbundance * new_nHTot
+                - lw.DefaultAtomicAbundance.total_abundance * new_nh_tot
             )
-            self.atmos.nHTot[:] = new_nHTot
+            self.atmos.nh_tot[:] = new_nh_tot
             self.atmos.ne[:] = new_ne
-            self.nh_tot = new_nHTot
+            self.nh_tot = new_nh_tot
             self.ne = new_ne
 
             if "H" in detailed_pops:
@@ -323,7 +324,7 @@ class StratifiedPromModel(PromModel):
         else:
             self.eq_pops = self.rad_set.compute_eq_pops(self.atmos)
 
-        self.spect = self.rad_set.compute_wavelength_grid(extraWavelengths=extra_wavelengths)
+        self.spect = self.rad_set.compute_wavelength_grid(extra_wavelengths=extra_wavelengths)
         self.Nthreads = Nthreads
         hprd = self.prd and self.vlos is not None
 
@@ -335,12 +336,16 @@ class StratifiedPromModel(PromModel):
             self.spect,
             self.eq_pops,
             Nthreads=Nthreads,
-            conserveCharge=self.conserve_charge,
+            conserve_charge=self.conserve_charge,
             **ctx_kwargs,
         )
         super().__init__(ctx)
 
     def iterate_se(self, *args, update_model_kwargs: Optional[dict] = None, **kwargs):
+        # NOTE(cmo): Remap the pre-1.0 kwargs here so the warning points at the caller.
+        kwargs = remap_old_keys(
+            kwargs, stacklevel=2, renames=PromModel.iterate_se.__lw_renamed_kwargs__
+        )
         if update_model_kwargs is None:
             update_model_kwargs = {}
 
@@ -351,34 +356,34 @@ class StratifiedPromModel(PromModel):
 
         if self.conserve_pressure:
 
-            def update_model(self, printNow, **kwargs):
+            def update_model(self, print_now, **kwargs):
                 # NOTE(cmo): Fix pressure throughout the atmosphere.
                 N = (
-                    lw.DefaultAtomicAbundance.totalAbundance * self.atmos.nHTot
+                    lw.DefaultAtomicAbundance.total_abundance * self.atmos.nh_tot
                     + self.atmos.ne
                 )
                 NError = self.pressure / (lw.KBoltzmann * self.temperature) - N
-                nHTotCorrection = NError / (
-                    lw.DefaultAtomicAbundance.totalAbundance
-                    + self.eq_pops["H"][-1] / self.atmos.nHTot
+                nh_tot_correction = NError / (
+                    lw.DefaultAtomicAbundance.total_abundance
+                    + self.eq_pops["H"][-1] / self.atmos.nh_tot
                 )
 
-                if printNow:
+                if print_now:
                     print(
-                        f"    nHTotError: {np.max(np.abs(nHTotCorrection / self.atmos.nHTot))}"
+                        f"    nh_tot error: {np.max(np.abs(nh_tot_correction / self.atmos.nh_tot))}"
                     )
                 self.atmos.ne[:] += (
-                    nHTotCorrection * self.eq_pops["H"][-1] / self.atmos.nHTot
+                    nh_tot_correction * self.eq_pops["H"][-1] / self.atmos.nh_tot
                 )
-                prevnHTot = np.copy(self.atmos.nHTot)
-                self.atmos.nHTot[:] += nHTotCorrection
-                if np.any(self.atmos.nHTot < 0.0):
-                    raise lw.ConvergenceError("nHTot driven negative!")
-                nHTotRatio = self.atmos.nHTot / prevnHTot
+                prev_nh_tot = np.copy(self.atmos.nh_tot)
+                self.atmos.nh_tot[:] += nh_tot_correction
+                if np.any(self.atmos.nh_tot < 0.0):
+                    raise lw.ConvergenceError("nh_tot driven negative!")
+                nh_tot_ratio = self.atmos.nh_tot / prev_nh_tot
 
-                for atom in self.rad_set.activeAtoms:
+                for atom in self.rad_set.active_atoms:
                     p = self.eq_pops[atom.element]
-                    p[...] *= nHTotRatio[None, :]
+                    p[...] *= nh_tot_ratio[None, :]
 
                 # TODO(cmo): Add condition to not always re-evaluate the line profiles. Maybe on ne change?
                 self.ctx.update_deps(vlos=False, background=False)
