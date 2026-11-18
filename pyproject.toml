@@ -9,7 +9,7 @@ write_to = 'promweaver/version.py'
 name = "promweaver"
 dynamic = ["version"]
 requires-python = ">=3.10"
-dependencies = ["lightweaver>=1.0.0rc4"]
+dependencies = ["lightweaver>=1.0.0"]
 authors = [
     {name = "Chris Osborne", email = "lw@contextuallight.com"}
 ]
