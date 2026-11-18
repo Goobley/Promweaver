@@ -7,14 +7,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>promweaver.j_prom_bc &mdash; Promweaver  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
-      <script src="../../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -82,7 +82,7 @@
 <div class="viewcode-block" id="UniformJPromBc">
 <a class="viewcode-back" href="../../promweaver-api.html#promweaver.j_prom_bc.UniformJPromBc">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">UniformJPromBc</span><span class="p">(</span><span class="n">PromBc</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    Simple boundary condition that supplies :math:`J_\nu` at each incoming ray</span>
 <span class="sd">    and frequency for the boundary condition. This value is uniform over each</span>
 <span class="sd">    ray. Putting the boundary condition into `final_synthesis` mode by</span>
@@ -100,11 +100,11 @@
 <span class="sd">    altitude_m : float</span>
 <span class="sd">        The altitude of the prominence above the solar surface [m]</span>
 <span class="sd">    prom_upper_lower : str, optional</span>
-<span class="sd">        Whether this is the &#39;upper&#39; or &#39;lower&#39; z-boundary for a prominence (not</span>
+<span class="sd">        Whether this is the 'upper' or 'lower' z-boundary for a prominence (not</span>
 <span class="sd">        used in filament cases).</span>
 <span class="sd">    Nrays : int, optional</span>
 <span class="sd">        The number of Gauss-Legendre rays to be used to compute J. Default: 50.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -118,9 +118,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">projection</span> <span class="o">=</span> <span class="n">projection</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">altitude</span> <span class="o">=</span> <span class="n">altitude_m</span>
 
-        <span class="k">if</span> <span class="n">projection</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;prominence&quot;</span><span class="p">,</span> <span class="s2">&quot;filament&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">projection</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"prominence"</span><span class="p">,</span> <span class="s2">"filament"</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Expected projection (</span><span class="si">{</span><span class="n">projection</span><span class="si">}</span><span class="s2">), to be &#39;prominence&#39; or &#39;filament&#39;&quot;</span>
+                <span class="sa">f</span><span class="s2">"Expected projection (</span><span class="si">{</span><span class="n">projection</span><span class="si">}</span><span class="s2">), to be 'prominence' or 'filament'"</span>
             <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">projection</span> <span class="o">=</span> <span class="n">projection</span>
 
@@ -142,8 +142,8 @@
         <span class="n">Iinterp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Nwave</span><span class="p">,</span> <span class="n">Nmu</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 
         <span class="n">final_synth</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_synthesis</span> <span class="k">if</span> <span class="n">Nmu</span> <span class="o">!=</span> <span class="mi">1</span> <span class="k">else</span> <span class="kc">True</span>
-        <span class="n">is_prom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projection</span> <span class="o">==</span> <span class="s2">&quot;prominence&quot;</span>
-        <span class="n">lower</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bc_type</span> <span class="o">==</span> <span class="s2">&quot;lower&quot;</span>
+        <span class="n">is_prom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projection</span> <span class="o">==</span> <span class="s2">"prominence"</span>
+        <span class="n">lower</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bc_type</span> <span class="o">==</span> <span class="s2">"lower"</span>
         <span class="n">multi_I</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">specialised_multi_I</span>
 
         <span class="k">if</span> <span class="n">final_synth</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">atmos</span><span class="o">.</span><span class="n">wmu</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">):</span>
@@ -189,7 +189,7 @@
                     <span class="n">J</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">compute_I</span><span class="p">(</span><span class="n">spect</span><span class="o">.</span><span class="n">wavelength</span><span class="p">,</span> <span class="n">mu_in</span><span class="p">)</span> <span class="o">*</span> <span class="n">wmu</span>
 
             <span class="c1"># NOTE(jmj): 0.5 multiplication to account for flipping in radial</span>
-            <span class="c1"># axis i.e., we don&#39;t explicitly consider coronal and so the</span>
+            <span class="c1"># axis i.e., we don't explicitly consider coronal and so the</span>
             <span class="c1"># chromospheric input would be copy-pasted there</span>
             <span class="k">if</span> <span class="n">is_prom</span><span class="p">:</span>
                 <span class="n">J</span> <span class="o">*=</span> <span class="mf">0.5</span>

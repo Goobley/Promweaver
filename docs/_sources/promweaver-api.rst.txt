@@ -60,6 +60,13 @@ promweaver.limb\_darkening module
     :members:
     :show-inheritance:
 
+promweaver.migrate module
+-------------------------
+
+.. automodule:: promweaver.migrate
+    :members:
+    :show-inheritance:
+
 promweaver.pctr\_prom module
 ----------------------------
 
